@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:gearhaven/app/data/services/order_services.dart';
 import 'package:gearhaven/app/models/cart_item.dart';
 import 'package:gearhaven/app/models/product.dart';
+import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/localStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,9 @@ import 'package:get/get.dart';
 class CartController extends GetxController {
   final count = 0.obs;
   List<CartItem> cart = [];
+
+  OrderService orderService = OrderService();
+  var createdOrderId = 0.obs;
 
   RxList<CartItem> selectedCartItems = RxList<CartItem>();
 
@@ -135,6 +140,83 @@ class CartController extends GetxController {
     setLocalCart();
     updateTotal();
     update();
+  }
+
+  void createOrder() async {
+    try {
+      int userId = await LocalStorage.getUserId() ??
+          0; // Assuming getUserId is async and has a fallback
+      if (userId == 0) {
+        // Handle the case where no user ID is found
+        Get.snackbar(
+          'User ID Error',
+          'No user ID found',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      } else {
+        debugPrint(userId.toString());
+      }
+
+      List<Map<String, dynamic>> cartItemsData = selectedCartItems.map((item) {
+        return {
+          "product": {
+            "product_id": item.product.productId,
+            "product_name": item.product.productName,
+            "product_price": item.product.productPrice,
+            "productstock_quantity": item.product.productstockQuantity,
+            "product_desc": item.product.productDesc,
+            "product_image": item.product.productImage,
+            "productcategory_id": item.product.productcategoryId,
+            "productsize_id": item.product.productsizeId,
+            "productcondition_id": item.product.productconditionId,
+            "productowner_id": item.product.productownerId,
+            "for_rent": item.product.forRent,
+            "user_name": item.product.userName,
+            "category_name": item.product.categoryName,
+            "productcondition_name": item.product.productconditionName,
+            "productsize_name": item.product.productsizeName,
+          },
+          "isSelected": item.isSelected,
+          "quantity": item.quantity,
+        };
+      }).toList();
+
+      await orderService
+          .createOrder(
+        userId: await LocalStorage.getUserId() ?? 0,
+        cartItems: cartItemsData,
+      )
+          .then((value) {
+        createdOrderId.value = value.orderId ?? 0;
+        Get.snackbar(
+          'Error in code',
+          value.message ?? 'Order created',
+          colorText: Colors.white,
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 60),
+        );
+        debugPrint(value.orderId.toString());
+        Get.toNamed(Routes.MAIN);
+      }).onError((error, stackTrace) {
+        Get.snackbar(
+          "Error",
+          error.toString(),
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 400),
+        );
+      });
+    } catch (e) {
+      Get.snackbar(
+        'Error in code',
+        e.toString(),
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 60),
+      );
+    }
   }
 
   @override

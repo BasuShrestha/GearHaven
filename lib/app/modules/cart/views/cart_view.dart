@@ -197,7 +197,7 @@ class CartView extends GetView<CartController> {
                                 backgroundColor: Colors.amber,
                                 duration: const Duration(seconds: 1),
                               )
-                            : Get.toNamed(Routes.HOME);
+                            : controller.createOrder();
                       },
                     ),
                   ],
