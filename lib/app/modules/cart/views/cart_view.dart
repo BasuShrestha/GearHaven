@@ -2,7 +2,6 @@
 
 import 'package:gearhaven/app/components/cart_card.dart';
 import 'package:gearhaven/app/components/customs/custom_button.dart';
-import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -182,12 +181,13 @@ class CartView extends GetView<CartController> {
                     ),
                     CustomButton(
                       color: Colors.green,
-                      width: 100,
+                      width: 150,
                       labelStyle: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                       ),
-                      label: 'Continue',
+                      label:
+                          'Checkout ${controller.selectedCartItems.isEmpty ? '' : "(${controller.selectedCartItems.length})"}',
                       onPressed: () {
                         controller.selectedCartItems.isEmpty
                             ? Get.snackbar(

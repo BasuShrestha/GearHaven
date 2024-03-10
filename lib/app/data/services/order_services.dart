@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:gearhaven/app/data/services/remote_services.dart';
-import 'package:gearhaven/app/models/cart_item.dart';
 import 'package:gearhaven/app/models/order_response.dart';
 
 class OrderService extends RemoteServices {
@@ -9,6 +7,7 @@ class OrderService extends RemoteServices {
 
   Future<OrderResponse> createOrder({
     required int userId,
+    required double orderTotal,
     required List cartItems,
   }) async {
     // FormData formData = FormData.fromMap({
@@ -20,8 +19,14 @@ class OrderService extends RemoteServices {
       String endPoint = '/create-order';
       // debugPrint("FormData: ${formData.fields}");
 
-      Response response = await json_dio
-          .post(endPoint, data: {"userId": userId, "cart": cartItems});
+      Response response = await json_dio.post(
+        endPoint,
+        data: {
+          "userId": userId,
+          "orderTotal": orderTotal,
+          "cart": cartItems,
+        },
+      );
       if (response.statusCode == 201) {
         return OrderResponse.fromJson(response.data);
       } else {

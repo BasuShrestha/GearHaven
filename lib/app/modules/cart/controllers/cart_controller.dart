@@ -6,6 +6,7 @@ import 'package:gearhaven/app/models/product.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/localStorage.dart';
 import 'package:flutter/material.dart';
+import 'package:gearhaven/app/views/views/order_summary_view.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
@@ -136,6 +137,7 @@ class CartController extends GetxController {
   }
 
   void removeProductFromCart(int index) {
+    selectedCartItems.remove(cart.elementAt(index));
     cart.removeAt(index);
     setLocalCart();
     updateTotal();
@@ -144,10 +146,9 @@ class CartController extends GetxController {
 
   void createOrder() async {
     try {
-      int userId = await LocalStorage.getUserId() ??
-          0; // Assuming getUserId is async and has a fallback
+      // checking if userId is not obtained from the local storage
+      int userId = await LocalStorage.getUserId() ?? 0;
       if (userId == 0) {
-        // Handle the case where no user ID is found
         Get.snackbar(
           'User ID Error',
           'No user ID found',
@@ -185,20 +186,25 @@ class CartController extends GetxController {
 
       await orderService
           .createOrder(
+        // ignore: await_only_futures
         userId: await LocalStorage.getUserId() ?? 0,
+        orderTotal: total.value,
         cartItems: cartItemsData,
       )
           .then((value) {
         createdOrderId.value = value.orderId ?? 0;
         Get.snackbar(
-          'Error in code',
+          'Order Placed',
           value.message ?? 'Order created',
           colorText: Colors.white,
           backgroundColor: Colors.green,
           duration: const Duration(seconds: 60),
         );
         debugPrint(value.orderId.toString());
-        Get.toNamed(Routes.MAIN);
+        Get.to(
+          () => const OrderSummaryView(),
+          arguments: selectedCartItems,
+        );
       }).onError((error, stackTrace) {
         Get.snackbar(
           "Error",
