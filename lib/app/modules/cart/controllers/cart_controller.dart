@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:gearhaven/app/data/services/order_services.dart';
 import 'package:gearhaven/app/models/cart_item.dart';
 import 'package:gearhaven/app/models/product.dart';
-import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/localStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/views/views/order_summary_view.dart';
@@ -203,7 +202,10 @@ class CartController extends GetxController {
         debugPrint(value.orderId.toString());
         Get.to(
           () => const OrderSummaryView(),
-          arguments: selectedCartItems,
+          arguments: {
+            'orderedItems': selectedCartItems,
+            'orderId': createdOrderId.value.toString()
+          },
         );
       }).onError((error, stackTrace) {
         Get.snackbar(
@@ -224,6 +226,8 @@ class CartController extends GetxController {
       );
     }
   }
+
+  void makePayment() {}
 
   @override
   void onReady() {
