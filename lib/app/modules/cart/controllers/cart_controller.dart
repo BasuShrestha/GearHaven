@@ -6,14 +6,17 @@ import 'package:gearhaven/app/models/product.dart';
 import 'package:gearhaven/app/utils/localStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/views/views/order_summary_view.dart';
+import 'package:gearhaven/app/views/views/payment_confirmation_view.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController {
   final count = 0.obs;
-  List<CartItem> cart = [];
+  RxList<CartItem> cart = RxList<CartItem>();
 
   OrderService orderService = OrderService();
   var createdOrderId = 0.obs;
+
+  var isLoading = false.obs;
 
   RxList<CartItem> selectedCartItems = RxList<CartItem>();
 
@@ -72,7 +75,7 @@ class CartController extends GetxController {
 
   void getLocalCart() {
     var localCart = jsonDecode(LocalStorage.getCart() ?? '[]') as List<dynamic>;
-    this.cart = localCart
+    this.cart.value = localCart
         .map(
           (e) => CartItem(
             product: Product.fromJson(e['product']),
@@ -145,7 +148,6 @@ class CartController extends GetxController {
 
   void createOrder() async {
     try {
-      // checking if userId is not obtained from the local storage
       int userId = await LocalStorage.getUserId() ?? 0;
       if (userId == 0) {
         Get.snackbar(
@@ -227,7 +229,72 @@ class CartController extends GetxController {
     }
   }
 
-  void makePayment() {}
+  void cancelOrder() async {
+    await orderService.cancelOrder(createdOrderId.value).then((value) {
+      Get.snackbar(
+        "Cancelled",
+        value,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 2),
+      );
+      selectedCartItems.clear();
+      Get.back();
+    });
+  }
+
+  void makePayment({required grandTotal, required otherData}) async {
+    try {
+      isLoading.value = true;
+      await orderService
+          .makePayment(
+        userId: LocalStorage.getUserId() ?? 0,
+        orderId: createdOrderId.value,
+        amountPaid: grandTotal,
+        otherData: otherData,
+      )
+          .then((value) async {
+        Get.snackbar(
+          'Success',
+          value,
+          colorText: Colors.white,
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 60),
+        );
+        await Get.to(() => const PaymentConfirmationView(), arguments: {
+          'orderedItems': selectedCartItems,
+          'paymentId': jsonDecode(otherData)['idx'],
+        });
+        for (CartItem item in selectedCartItems) {
+          cart.remove(item);
+        }
+        selectedCartItems.clear();
+        setLocalCart();
+        updateTotal();
+        isLoading.value = false;
+
+        update();
+      }).onError((error, stackTrace) {
+        Get.snackbar(
+          "Error",
+          error.toString(),
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 60),
+        );
+        isLoading.value = false;
+      });
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 60),
+      );
+      isLoading.value = false;
+    }
+  }
 
   @override
   void onReady() {

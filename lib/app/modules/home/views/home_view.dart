@@ -16,6 +16,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(HomeController());
+    var cartController = Get.put(CartController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home View'),
@@ -54,13 +55,15 @@ class HomeView extends GetView<HomeController> {
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: Center(
-                        child: Text(
-                          '1',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                      child: Obx(
+                        () => Center(
+                          child: Text(
+                            cartController.cart.length.toString(),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

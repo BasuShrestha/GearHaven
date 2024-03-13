@@ -9,6 +9,7 @@ import 'package:gearhaven/app/utils/localStorage.dart';
 import 'package:gearhaven/app/views/views/edit_profile_page_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gearhaven/app/views/views/payment_confirmation_view.dart';
 
 import 'package:get/get.dart';
 
@@ -280,7 +281,9 @@ class ProfilePageView extends GetView<ProfilePageController> {
                               ],
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(() => const PaymentConfirmationView());
+                              },
                               child: Icon(
                                 CupertinoIcons.forward,
                                 color: CustomColors.backgroundColor,
