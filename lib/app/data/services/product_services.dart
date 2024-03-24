@@ -267,7 +267,6 @@ class ProductServices extends RemoteServices {
             "Network error occurred while fetching products. Please check your connection and try again.");
       }
     } catch (e) {
-      // General error handling for any other exceptions
       debugPrint("Unexpected error fetching products: $e");
       throw Exception(
           "Unexpected error occurred while fetching products. Please try again later.");

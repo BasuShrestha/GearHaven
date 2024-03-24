@@ -263,7 +263,7 @@ class OrderSummaryView extends GetView {
                             ),
                             TextButton(
                               onPressed: () async {
-                                var total = grandTotal.ceil().toInt() * 100;
+                                var total = grandTotal.ceil().toInt() * 1000;
                                 KhaltiScope.of(Get.context!).pay(
                                   preferences: [
                                     PaymentPreference.khalti,

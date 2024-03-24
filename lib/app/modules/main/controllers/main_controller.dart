@@ -1,6 +1,6 @@
 import 'package:gearhaven/app/data/services/user_services.dart';
 import 'package:gearhaven/app/models/user.dart';
-import 'package:gearhaven/app/modules/buy_page/views/buy_page_view.dart';
+import 'package:gearhaven/app/modules/Orders_page/views/orders_page_view.dart';
 import 'package:gearhaven/app/modules/home/views/home_view.dart';
 import 'package:gearhaven/app/modules/profile_page/views/profile_page_view.dart';
 import 'package:gearhaven/app/modules/rent_page/views/rent_page_view.dart';
@@ -22,7 +22,7 @@ class MainController extends GetxController {
 
   final pages = const [
     HomeView(),
-    BuyPageView(),
+    OrdersPageView(),
     SellPageView(),
     RentPageView(),
     ProfilePageView(),

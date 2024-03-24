@@ -99,7 +99,7 @@ class RemoteServices {
     }
     return null;
   }
-
+}
   // Future<String> uploadProduct({
   //   required String name,
   //   required int price,
@@ -201,4 +201,3 @@ class RemoteServices {
   //     return "Exception: $e";
   //   }
   // }
-}

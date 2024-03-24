@@ -118,7 +118,7 @@ class PaymentConfirmationView extends GetView {
             ),
             Container(
               width: 350,
-              height: 300,
+              height: Get.height * 0.3,
               padding: const EdgeInsets.fromLTRB(12, 5, 12, 5),
               decoration: BoxDecoration(
                 color: Colors.white,

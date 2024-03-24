@@ -64,7 +64,7 @@ class MainView extends GetView<MainController> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.shopping_bag_outlined),
                 activeIcon: Icon(Icons.shopping_bag),
-                label: "Buy",
+                label: "Orders",
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               BottomNavigationBarItem(

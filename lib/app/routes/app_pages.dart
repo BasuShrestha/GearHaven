@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/Orders_page/bindings/orders_page_binding.dart';
+import '../modules/Orders_page/views/orders_page_view.dart';
 import '../modules/buy_page/bindings/buy_page_binding.dart';
 import '../modules/buy_page/views/buy_page_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
@@ -14,6 +16,8 @@ import '../modules/main/bindings/main_binding.dart';
 import '../modules/main/views/main_view.dart';
 import '../modules/onboarding_screen/bindings/onboarding_screen_binding.dart';
 import '../modules/onboarding_screen/views/onboarding_screen_view.dart';
+import '../modules/orders_delivery/bindings/orders_delivery_binding.dart';
+import '../modules/orders_delivery/views/orders_delivery_view.dart';
 import '../modules/product_description/bindings/product_description_binding.dart';
 import '../modules/product_description/views/product_description_view.dart';
 import '../modules/profile_page/bindings/profile_page_binding.dart';
@@ -92,6 +96,16 @@ class AppPages {
       name: _Paths.CART,
       page: () => const CartView(),
       binding: CartBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDERS_PAGE,
+      page: () => const OrdersPageView(),
+      binding: OrdersPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDERS_DELIVERY,
+      page: () => const OrdersDeliveryView(),
+      binding: OrdersDeliveryBinding(),
     ),
   ];
 }

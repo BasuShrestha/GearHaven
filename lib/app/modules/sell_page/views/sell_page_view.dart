@@ -1,4 +1,5 @@
 import 'package:gearhaven/app/components/product_card.dart';
+import 'package:gearhaven/app/modules/orders_delivery/views/orders_delivery_view.dart';
 import 'package:gearhaven/app/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,9 @@ class SellPageView extends GetView<SellPageController> {
         elevation: 0,
         actions: [
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const OrdersDeliveryView());
+            },
             child: Container(
               padding: const EdgeInsets.all(5),
               margin: const EdgeInsets.only(right: 10),
@@ -34,7 +37,7 @@ class SellPageView extends GetView<SellPageController> {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: const Icon(
-                CupertinoIcons.add,
+                Icons.local_shipping_outlined,
                 color: Colors.white,
                 size: 25,
               ),

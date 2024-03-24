@@ -32,7 +32,7 @@ class CartView extends GetView<CartController> {
           child: Column(
             children: [
               SizedBox(
-                height: 625,
+                height: Get.height * 0.6,
                 child: controller.cart.isEmpty
                     ? const Center(
                         child: Text(
@@ -105,75 +105,6 @@ class CartView extends GetView<CartController> {
                             ),
                           ),
                         ),
-                        // TextButton(
-                        //   onPressed: () async {
-                        //     if (controller.cart.isEmpty) {
-                        //       Get.showSnackbar(const GetSnackBar(
-                        //         backgroundColor: Colors.red,
-                        //         message: 'Cart is empty!',
-                        //         duration: Duration(seconds: 3),
-                        //       ));
-                        //       return;
-                        //     }
-                        //     var orderId = await controller.makeOrder();
-                        //     if (orderId == null) {
-                        //       return;
-                        //     }
-                        //     KhaltiScope.of(Get.context!).pay(
-                        //       preferences: [
-                        //         PaymentPreference.khalti,
-                        //         PaymentPreference.connectIPS
-                        //       ],
-                        //       config: PaymentConfig(
-                        //         amount: 1000,
-                        //         productIdentity: orderId.toString(),
-                        //         productName: "My Product",
-                        //       ),
-                        //       onSuccess: (PaymentSuccessModel v) {
-                        //         controller.makePayment(
-                        //             total: (v.amount / 100).toString(),
-                        //             orderId: orderId.toString(),
-                        //             otherData: v.toString());
-                        //       },
-                        //       onFailure: (v) {
-                        //         Get.showSnackbar(const GetSnackBar(
-                        //           backgroundColor: Colors.red,
-                        //           message: 'Payment failed!',
-                        //           duration: Duration(seconds: 3),
-                        //         ));
-                        //       },
-                        //       onCancel: () {
-                        //         Get.showSnackbar(const GetSnackBar(
-                        //           backgroundColor: Colors.red,
-                        //           message: 'Payment cancelled!',
-                        //           duration: Duration(seconds: 3),
-                        //         ));
-                        //       },
-                        //     );
-                        //   },
-                        //   child: Container(
-                        //       padding: const EdgeInsets.all(10),
-                        //       margin: const EdgeInsets.all(10),
-                        //       decoration: BoxDecoration(
-                        //           color: Colors.white,
-                        //           borderRadius: BorderRadius.circular(10),
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //               color: Colors.grey.withOpacity(0.5),
-                        //               spreadRadius: 5,
-                        //               blurRadius: 7,
-                        //             ),
-                        //           ]),
-                        //       child: Row(
-                        //         mainAxisAlignment: MainAxisAlignment.center,
-                        //         children: [
-                        //           Image.network(
-                        //               'https://web.khalti.com/static/img/logo1.png',
-                        //               height: 40),
-                        //           Text('Pay with Khalti'),
-                        //         ],
-                        //       )),
-                        // ),
                       ],
                     ),
                     SizedBox(

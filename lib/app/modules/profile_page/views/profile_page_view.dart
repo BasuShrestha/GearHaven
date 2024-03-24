@@ -9,9 +9,11 @@ import 'package:gearhaven/app/utils/localStorage.dart';
 import 'package:gearhaven/app/views/views/edit_profile_page_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gearhaven/app/views/views/order_status_view.dart';
 import 'package:gearhaven/app/views/views/payment_confirmation_view.dart';
 
 import 'package:get/get.dart';
+import 'package:get_ip_address/get_ip_address.dart';
 
 import '../controllers/profile_page_controller.dart';
 
@@ -322,7 +324,9 @@ class ProfilePageView extends GetView<ProfilePageController> {
                               ],
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(() => const OrderStatusView());
+                              },
                               child: Icon(
                                 CupertinoIcons.forward,
                                 color: CustomColors.backgroundColor,
@@ -400,7 +404,16 @@ class ProfilePageView extends GetView<ProfilePageController> {
                               ],
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () async {
+                                var ip = IpAddress(type: RequestType.text);
+                                Future<String> getIp() async {
+                                  dynamic data = await ip.getIpAddress();
+                                  return data;
+                                }
+
+                                String ipString = await getIp();
+                                debugPrint(ipString);
+                              },
                               child: Icon(
                                 CupertinoIcons.forward,
                                 color: CustomColors.backgroundColor,

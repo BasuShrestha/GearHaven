@@ -10,13 +10,15 @@ class BuyPageView extends GetView<BuyPageController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BuyPageView'),
+        title: const Text('Your Orders'),
         centerTitle: true,
       ),
       body: const Center(
         child: Text(
-          'BuyPageView is working',
-          style: TextStyle(fontSize: 20),
+          'You do not have any orders to be delivered...',
+          style: TextStyle(
+            fontSize: 15,
+          ),
         ),
       ),
     );
