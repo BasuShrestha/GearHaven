@@ -30,7 +30,6 @@ class OrderStatusView extends GetView<OrdersPageController> {
               ],
             ),
             Positioned(
-              left: 100,
               child: Expanded(
                 child: ListView(
                   children: [

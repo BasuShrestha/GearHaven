@@ -81,4 +81,40 @@ class OrderDetail {
         "product_name": productName,
         "product_image": productImage,
       };
+
+  OrderDetail copyWith({
+    int? orderdetailsId,
+    int? orderId,
+    int? productId,
+    int? sellerId,
+    int? quantity,
+    double? lineTotal,
+    String? deliveryStatus,
+    int? userId,
+    DateTime? orderDate,
+    double? orderTotal,
+    String? userName,
+    String? userContact,
+    String? userLocation,
+    String? productName,
+    String? productImage,
+  }) {
+    return OrderDetail(
+      orderdetailsId: orderdetailsId ?? this.orderdetailsId,
+      orderId: orderId ?? this.orderId,
+      productId: productId ?? this.productId,
+      sellerId: sellerId ?? this.sellerId,
+      quantity: quantity ?? this.quantity,
+      lineTotal: lineTotal ?? this.lineTotal,
+      deliveryStatus: deliveryStatus ?? this.deliveryStatus,
+      userId: userId ?? this.userId,
+      orderDate: orderDate ?? this.orderDate,
+      orderTotal: orderTotal ?? this.orderTotal,
+      userName: userName ?? this.userName,
+      userContact: userContact ?? this.userContact,
+      userLocation: userLocation ?? this.userLocation,
+      productName: productName ?? this.productName,
+      productImage: productImage ?? this.productImage,
+    );
+  }
 }

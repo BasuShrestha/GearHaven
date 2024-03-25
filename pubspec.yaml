@@ -20,6 +20,9 @@ dependencies:
   timeline_tile: ^2.0.0
   get_ip_address: ^0.0.6
   dart_ipify: ^1.1.1
+  firebase_core: ^2.27.0
+  firebase_messaging: ^14.7.19
+  flutter_local_notifications: ^17.0.0
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

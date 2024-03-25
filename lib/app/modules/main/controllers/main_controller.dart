@@ -5,7 +5,7 @@ import 'package:gearhaven/app/modules/home/views/home_view.dart';
 import 'package:gearhaven/app/modules/profile_page/views/profile_page_view.dart';
 import 'package:gearhaven/app/modules/rent_page/views/rent_page_view.dart';
 import 'package:gearhaven/app/modules/sell_page/views/sell_page_view.dart';
-import 'package:gearhaven/app/utils/localStorage.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:gearhaven/app/utils/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

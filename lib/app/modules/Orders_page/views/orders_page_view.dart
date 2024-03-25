@@ -38,18 +38,20 @@ class OrdersPageView extends GetView<OrdersPageController> {
                     ),
                   ),
                 )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: controller.allOrders.length,
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      Get.to(() => const OrderStatusView(), arguments: {
-                        "orderDetail": controller.allOrders[index],
-                      });
-                    },
-                    child: OrderedProductCard(
-                      orderDetail: controller.allOrders[index],
-                      index: index,
+              : Obx(
+                  () => ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.allOrders.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Get.to(() => const OrderStatusView(), arguments: {
+                          "orderDetail": controller.allOrders[index],
+                        });
+                      },
+                      child: OrderedProductCard(
+                        orderDetail: controller.allOrders[index],
+                        index: index,
+                      ),
                     ),
                   ),
                 ),

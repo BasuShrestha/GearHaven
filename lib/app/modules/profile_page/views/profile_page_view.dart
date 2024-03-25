@@ -5,7 +5,7 @@ import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/assets.dart';
 import 'package:gearhaven/app/utils/colors.dart';
 import 'package:gearhaven/app/utils/constants.dart';
-import 'package:gearhaven/app/utils/localStorage.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:gearhaven/app/views/views/edit_profile_page_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

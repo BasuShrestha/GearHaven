@@ -10,7 +10,7 @@ import 'package:gearhaven/app/models/product_size.dart';
 import 'package:gearhaven/app/modules/home/controllers/home_controller.dart';
 import 'package:gearhaven/app/utils/colors.dart';
 import 'package:gearhaven/app/utils/constants.dart';
-import 'package:gearhaven/app/utils/localStorage.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';

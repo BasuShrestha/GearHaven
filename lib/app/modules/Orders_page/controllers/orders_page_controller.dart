@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/data/services/order_services.dart';
 import 'package:gearhaven/app/models/order_detail.dart';
-import 'package:gearhaven/app/utils/localStorage.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:get/get.dart';
 
 class OrdersPageController extends GetxController {
@@ -22,13 +22,37 @@ class OrdersPageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getOrderedProductsForUser();
+    getOrderedProductsForUser(LocalStorage.getUserId() ?? 0);
   }
 
-  void getOrderedProductsForUser() async {
+  void updateOrderStatus(String orderId, String newStatus) {
+    var orderIndex = allOrders.indexWhere((o) => o.orderId == orderId);
+    if (orderIndex != -1) {
+      // Cloning the order with updated status since it's a final property.
+      var updatedOrder =
+          allOrders[orderIndex].copyWith(deliveryStatus: newStatus);
+
+      // Replace the old order with updated order
+      allOrders[orderIndex] = updatedOrder;
+
+      if (newStatus != "Delivered") {
+        if (!ordersNotDelivered.any((o) => o.orderId == orderId)) {
+          ordersNotDelivered.add(updatedOrder);
+        }
+      } else {
+        ordersNotDelivered.removeWhere((o) => o.orderId == orderId);
+      }
+      update(); // This will trigger the UI to refresh
+    } else {
+      // Handle the case where the order is not found
+      debugPrint('Order with ID $orderId not found');
+    }
+  }
+
+  void getOrderedProductsForUser(int userId) async {
     isLoading.value = true;
     try {
-      int currentUserId = LocalStorage.getUserId() ?? 0;
+      int currentUserId = LocalStorage.getUserId() ?? userId;
       debugPrint("Current User Id: ${currentUserId.toString()}");
       List<OrderDetail> fetchedProducts =
           await orderService.fetchOrderedProductsByBuyerId(currentUserId);

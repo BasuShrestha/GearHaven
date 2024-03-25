@@ -87,7 +87,7 @@ class HomeView extends GetView<HomeController> {
       ),
       body: GetBuilder<HomeController>(
         builder: (context) => Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
           color: CustomColors.backgroundColor,
           child: Obx(
             () => controller.isLoading.value

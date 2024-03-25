@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/data/services/order_services.dart';
 import 'package:gearhaven/app/models/order_detail.dart';
-import 'package:gearhaven/app/utils/localStorage.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:get/get.dart';
 
 class OrdersDeliveryController extends GetxController {

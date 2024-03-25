@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "211267464184",
+    "project_id": "gearhaven-project",
+    "storage_bucket": "gearhaven-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211267464184:android:88e287aed7f03fec8b440d",
+        "android_client_info": {
+          "package_name": "com.example.gearhaven"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp-l2wI5qN__6zCF4Zve2BcgYWFf7GUpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

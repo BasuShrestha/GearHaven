@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/constants.dart';
-import 'package:gearhaven/app/utils/localStorage.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:get/get.dart' as gt;
 
 class RemoteServices {

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:gearhaven/app/data/services/order_services.dart';
 import 'package:gearhaven/app/models/cart_item.dart';
 import 'package:gearhaven/app/models/product.dart';
-import 'package:gearhaven/app/utils/localStorage.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/views/views/order_summary_view.dart';
 import 'package:gearhaven/app/views/views/payment_confirmation_view.dart';

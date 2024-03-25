@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:gearhaven/app/data/services/auth_services.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/constants.dart';
-import 'package:gearhaven/app/utils/localStorage.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otp_text_field/otp_text_field.dart';

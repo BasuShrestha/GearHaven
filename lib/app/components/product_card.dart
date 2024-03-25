@@ -38,7 +38,7 @@ class ProductCard extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Hero(
                 tag: 'product+${product.productId}',
                 child: Image.network(
@@ -51,7 +51,7 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Container(
                 padding: const EdgeInsets.all(10),
                 child: Column(
