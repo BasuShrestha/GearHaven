@@ -49,6 +49,12 @@ class RegisterView extends GetView<RegisterController> {
                             controller: controller.firstNameController,
                             label: "Firstname",
                             textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please enter your first name";
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(
                             height: 20,
@@ -57,6 +63,12 @@ class RegisterView extends GetView<RegisterController> {
                             controller: controller.lastNameController,
                             label: "Lastname",
                             textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please enter your last name";
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(
                             height: 20,
@@ -65,6 +77,16 @@ class RegisterView extends GetView<RegisterController> {
                             controller: controller.emailController,
                             label: "Email",
                             textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              Pattern pattern =
+                                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                              RegExp regex = RegExp(pattern as String);
+                              if (!regex.hasMatch(value ?? '')) {
+                                return 'Please enter a valid email';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
                           SizedBox(
                             height: 20,
@@ -74,6 +96,27 @@ class RegisterView extends GetView<RegisterController> {
                             label: "Password",
                             isPassword: true,
                             textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter a password";
+                              }
+                              if (value.length < 8) {
+                                return "The password must be at least 8 characters long";
+                              }
+                              if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                                return "The password must contain at least one uppercase letter";
+                              }
+                              if (!RegExp(r'[a-z]').hasMatch(value)) {
+                                return "The password must contain at least one lowercase letter";
+                              }
+                              if (!RegExp(r'\d').hasMatch(value)) {
+                                return "The password must contain at least one number";
+                              }
+                              if (!RegExp(r'[^A-Za-z0-9]').hasMatch(value)) {
+                                return "The password must contain at least one special character";
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(
                             height: 20,
@@ -83,6 +126,13 @@ class RegisterView extends GetView<RegisterController> {
                             label: "Confirm Password",
                             isPassword: true,
                             textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              if (value!.isEmpty ||
+                                  value != controller.passwordController.text) {
+                                return "The passwords do not match";
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(
                             height: 20,
@@ -91,6 +141,15 @@ class RegisterView extends GetView<RegisterController> {
                             controller: controller.contactController,
                             label: "Contact Number",
                             textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter a contact number";
+                              }
+                              if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                                return "Please enter a valid contact number";
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(
                             height: 20,
@@ -99,6 +158,12 @@ class RegisterView extends GetView<RegisterController> {
                             controller: controller.locationController,
                             label: "Address",
                             textInputAction: TextInputAction.done,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please enter your current address";
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(
                             height: 50,

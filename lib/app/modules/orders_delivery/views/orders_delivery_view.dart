@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/components/sold_product_card.dart';
 import 'package:gearhaven/app/utils/colors.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 
 import 'package:get/get.dart';
 
@@ -47,12 +48,16 @@ class OrdersDeliveryView extends GetView<OrdersDeliveryController> {
                         index: index,
                         deliveryStatuses: controller.deliveryStatuses,
                         onStatusChanged: (newStatus) {
+                          debugPrint(
+                              "Device FCM Token: ${LocalStorage.getFcmToken()}");
+                          debugPrint(
+                              "Buyer FCM Token: ${controller.orders[index].fcmToken}");
                           // Call a method in the controller to update the status
                           controller.updateDeliveryStatus(
-                            controller.orders[index].orderId ?? 0,
-                            controller.orders[index].productId ?? 0,
-                            newStatus,
-                          );
+                              controller.orders[index].orderId ?? 0,
+                              controller.orders[index].productId ?? 0,
+                              newStatus,
+                              controller.orders[index].fcmToken ?? 'No Fcm');
                         },
                       ),
                       Positioned(

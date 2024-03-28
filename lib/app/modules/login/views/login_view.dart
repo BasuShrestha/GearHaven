@@ -57,6 +57,16 @@ class LoginView extends GetView<LoginController> {
                                     label: "Email",
                                     controller: controller.emailController,
                                     textInputAction: TextInputAction.next,
+                                    validator: (value) {
+                                      Pattern pattern =
+                                          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                      RegExp regex = RegExp(pattern as String);
+                                      if (!regex.hasMatch(value ?? '')) {
+                                        return 'Please enter a valid email';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
                                   ),
                                   SizedBox(
                                     height: 20,
@@ -65,32 +75,13 @@ class LoginView extends GetView<LoginController> {
                                     controller: controller.passwordController,
                                     label: "Password",
                                     isPassword: true,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Please enter your password";
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  // SizedBox(
-                                  //   width: 350,
-                                  //   child: TextField(
-                                  //     decoration: InputDecoration(
-                                  //       label: Text(
-                                  //         "Password",
-                                  //         style: TextStyle(
-                                  //           color: Colors.white,
-                                  //           fontSize: 20,
-                                  //         ),
-                                  //       ),
-                                  //       enabledBorder: UnderlineInputBorder(
-                                  //         borderSide: BorderSide(
-                                  //           color: Colors.white,
-                                  //           width: 2,
-                                  //           style: BorderStyle.solid,
-                                  //         ),
-                                  //       ),
-                                  //       suffixIcon: Icon(
-                                  //         Icons.visibility_off_rounded,
-                                  //         color: Colors.white,
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
                                   SizedBox(
                                     height: 20,
                                   ),

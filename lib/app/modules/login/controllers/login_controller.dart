@@ -26,7 +26,6 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    //repo;
     checkUserState();
   }
 
@@ -87,41 +86,56 @@ class LoginController extends GetxController {
   // }
 
   void validateLogin() {
-    try {
-      isLoading.value = true;
-      Map<String, dynamic> data = {
-        'email': emailController.text,
-        'password': passwordController.text,
-      };
-      auth.login(data).then((value) {
-        Get.snackbar(
-          "Success",
-          value.message ?? '',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 1),
-        );
-        LocalStorage.setAccessToken(value.accessToken ?? '');
-        debugPrint(value.accessToken);
-        LocalStorage.setRefreshToken(value.refreshToken ?? '');
-        debugPrint(value.refreshToken);
-        Get.offAllNamed(Routes.MAIN);
-        isLoading.value = false;
-      }).onError((error, stackTrace) {
+    if (loginFormKey.currentState!.validate()) {
+      try {
+        isLoading.value = true;
+        Map<String, dynamic> data = {
+          'email': emailController.text,
+          'password': passwordController.text,
+        };
+        auth.login(data).then((value) {
+          Get.snackbar(
+            "Success",
+            value.message ?? '',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 1),
+          );
+          LocalStorage.setAccessToken(value.accessToken ?? '');
+          debugPrint(value.accessToken);
+          LocalStorage.setRefreshToken(value.refreshToken ?? '');
+          debugPrint(value.refreshToken);
+          LocalStorage.setFcmToken(value.user?.fcmToken ?? 'No fcm Token');
+          debugPrint(value.user?.fcmToken ?? 'No fcm Token');
+          LocalStorage.setFcmToken(
+              value.user?.userId.toString() ?? 'No user Id');
+          debugPrint(value.user?.userId.toString() ?? 'No user Id');
+          Get.offAllNamed(Routes.MAIN);
+          isLoading.value = false;
+        }).onError((error, stackTrace) {
+          isLoading.value = false;
+          Get.snackbar(
+            "Error",
+            error.toString(),
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+          );
+        });
+      } catch (e) {
         isLoading.value = false;
         Get.snackbar(
           "Error",
-          error.toString(),
+          "Something went wrong!",
           backgroundColor: Colors.red,
           colorText: Colors.white,
           duration: const Duration(seconds: 3),
         );
-      });
-    } catch (e) {
-      isLoading.value = false;
+      }
+    } else {
       Get.snackbar(
         "Error",
-        "Something went wrong!",
+        "Fill all the fileds!",
         backgroundColor: Colors.red,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),

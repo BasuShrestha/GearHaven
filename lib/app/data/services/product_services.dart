@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:gearhaven/app/data/services/remote_services.dart';
+import 'package:gearhaven/app/models/RentalProduct.dart';
 import 'package:gearhaven/app/models/product.dart';
 import 'package:gearhaven/app/models/product_category.dart';
 import 'package:gearhaven/app/models/product_condition.dart';
@@ -13,15 +14,16 @@ class ProductServices extends RemoteServices {
 
   Future<String> uploadProduct({
     required String name,
-    required double price,
+    double? price,
     required int quantity,
     required String description,
     required String fileName,
     Uint8List? imageBytes,
     required int category,
     required int size,
-    required int condition,
+    int? condition,
     required int ownerId,
+    double? rateForDay,
     required bool forRent,
   }) async {
     FormData formData = FormData.fromMap({
@@ -36,6 +38,7 @@ class ProductServices extends RemoteServices {
       "sizeId": size,
       "conditionId": condition,
       "ownerId": ownerId,
+      "ratePerDay": rateForDay,
     });
 
     try {
@@ -60,7 +63,7 @@ class ProductServices extends RemoteServices {
     }
   }
 
-  Future<String> updateProduct({
+  Future<String> updateSalesProduct({
     required int productId,
     required String name,
     required double price,
@@ -89,7 +92,65 @@ class ProductServices extends RemoteServices {
     });
 
     try {
-      String endpoint = '/products/$productId';
+      String endpoint = '/products/sales/$productId';
+      Response response = await multipart_dio.put(endpoint, data: formData);
+      if (response.statusCode == 201) {
+        var responseData = response.data;
+        if (responseData is Map<String, dynamic> &&
+            responseData.containsKey('message') &&
+            responseData['message'] is String) {
+          return responseData['message'];
+        } else {
+          throw Exception("Unexpected response format");
+        }
+      } else {
+        return "Error: Server responded with status code ${response.statusCode}";
+      }
+    } on DioException catch (dioError) {
+      if (dioError.response?.statusCode == 500) {
+        return Future.error(dioError.response?.data['message']);
+      } else if (dioError.response?.statusCode == 404) {
+        return Future.error(dioError.response?.data['message']);
+      } else {
+        return Future.error("Dio Exception: ${dioError.toString()}");
+      }
+    } catch (e) {
+      return "Exception: $e";
+    }
+  }
+
+  Future<String> updateRentalProduct({
+    required int productId,
+    required String name,
+    double? price,
+    required int quantity,
+    required String description,
+    required String fileName,
+    Uint8List? imageBytes,
+    required int category,
+    required int size,
+    int? condition,
+    required int ownerId,
+    required double? ratePerDay,
+    //required bool forRent,
+  }) async {
+    FormData formData = FormData.fromMap({
+      "name": name,
+      "price": price,
+      "stockQuantity": quantity,
+      "description": description,
+      "image": imageBytes != null
+          ? MultipartFile.fromBytes(imageBytes, filename: fileName)
+          : null,
+      "categoryId": category,
+      "sizeId": size,
+      "conditionId": condition,
+      "ownerId": ownerId,
+      "ratePerDay": ratePerDay,
+    });
+
+    try {
+      String endpoint = '/products/rent/$productId';
       Response response = await multipart_dio.put(endpoint, data: formData);
       if (response.statusCode == 201) {
         var responseData = response.data;
@@ -236,12 +297,9 @@ class ProductServices extends RemoteServices {
     }
   }
 
-  Future<List<Product>> fetchProductsByOwnerId(int ownerId,
-      {bool forRent = false}) async {
+  Future<List<Product>> fetchSalesProductsByOwnerId(int ownerId) async {
     try {
-      String endpoint = forRent
-          ? '/products/rent/owner/$ownerId'
-          : '/products/sale/owner/$ownerId';
+      String endpoint = '/products/sale/owner/$ownerId';
       final response = await json_dio.get(endpoint);
       debugPrint(response.data.toString());
 
@@ -270,6 +328,36 @@ class ProductServices extends RemoteServices {
       debugPrint("Unexpected error fetching products: $e");
       throw Exception(
           "Unexpected error occurred while fetching products. Please try again later.");
+    }
+  }
+
+  Future<List<RentalProduct>> fetchRentalProductsByOwnerId(int ownerId) async {
+    try {
+      String endpoint = '/products/rent/owner/$ownerId';
+      final response = await json_dio.get(endpoint);
+      debugPrint(response.data.toString());
+
+      List<RentalProduct> products = (response.data as List)
+          .map((productJson) => RentalProduct.fromJson(productJson))
+          .toList();
+      return products;
+    } on DioException catch (dioError) {
+      if (dioError.response?.statusCode == 409) {
+        return Future.error('409 Error: ${dioError.response?.data['message']}');
+      } else if (dioError.response?.statusCode == 401) {
+        return Future.error('401 Error: ${dioError.response?.data['message']}');
+      } else if (dioError.response?.statusCode == 400) {
+        return Future.error('400 Error: ${dioError.response?.data['message']}');
+      } else if (dioError.response?.statusCode == 404) {
+        return Future.error('404 Error: ${dioError.response?.data['message']}');
+      } else if (dioError.response?.statusCode == 500) {
+        return Future.error('500 Error: ${dioError.response?.data['message']}');
+      } else {
+        return Future.error("Error in the code");
+      }
+    } catch (e) {
+      debugPrint("Unexpected error fetching products: $e");
+      throw Exception("Error: ${e.toString()}");
     }
   }
 }

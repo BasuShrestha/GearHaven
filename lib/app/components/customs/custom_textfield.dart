@@ -15,6 +15,7 @@ class CustomTextfield extends StatefulWidget {
   final Color? borderColor;
   final Color? iconColor;
   final TextInputType? keyboardType;
+  final FormFieldValidator<String>? validator;
 
   const CustomTextfield({
     super.key,
@@ -32,6 +33,7 @@ class CustomTextfield extends StatefulWidget {
     this.borderColor,
     this.iconColor,
     this.keyboardType,
+    this.validator,
   });
 
   @override
@@ -52,6 +54,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         cursorHeight: widget.cursorHeight ?? 24,
         cursorOpacityAnimates: true,
         obscureText: widget.isPassword! ? !isObscured : false,
+        validator: widget.validator,
         style: widget.textStyle ??
             const TextStyle(
               fontSize: 18,

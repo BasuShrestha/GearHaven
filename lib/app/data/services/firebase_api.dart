@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:gearhaven/app/modules/Orders_page/controllers/orders_page_controller.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:get/get.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
@@ -18,6 +19,10 @@ Future<void> handleMessage(RemoteMessage message) async {
   debugPrint("Title: ${message.notification?.title}");
   debugPrint("Body: ${message.notification?.body}");
   debugPrint("Payload: ${message.data}");
+  Get.find<OrdersPageController>()
+      .getOrderedProductsForUser(LocalStorage.getUserId() ?? 0);
+  Get.find<OrdersPageController>().update();
+  Get.toNamed(Routes.ORDERS_PAGE);
 }
 
 class FirebaseApi {
@@ -36,7 +41,15 @@ class FirebaseApi {
     if (message == null) return;
     // navigatorKey.currentState
     //     ?.pushNamed(Routes.ORDERS_DELIVERY, arguments: message);
-    Get.toNamed(Routes.ORDERS_DELIVERY, arguments: message);
+    // Get.toNamed(Routes.ORDERS_DELIVERY, arguments: message);
+    if (message.data['messageType'] == 'deliveryStatus') {
+      Get.find<OrdersPageController>()
+          .getOrderedProductsForUser(LocalStorage.getUserId() ?? 0);
+      Get.find<OrdersPageController>().update();
+      Get.toNamed(Routes.ORDERS_PAGE);
+    } else {
+      Get.toNamed(Routes.MAIN);
+    }
   }
 
   Future initPushNotifications() async {
@@ -96,6 +109,7 @@ class FirebaseApi {
     await _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
     debugPrint("Token $fCMToken");
+    LocalStorage.setFcmToken(fCMToken ?? 'No Token');
     initPushNotifications();
     initLocalNotifications(currentUserId);
     Get.put(OrdersPageController()).getOrderedProductsForUser(currentUserId);

@@ -43,7 +43,7 @@ class SellPageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getProductsForCurrentUser();
+    getSalesProductsForCurrentUser();
     getAllCategories();
     getAllSizes();
     getAllConditions();
@@ -62,14 +62,12 @@ class SellPageController extends GetxController {
     selectedImageBytes.value = null;
   }
 
-  void getProductsForCurrentUser() async {
-    isLoading.value =
-        true; // Use isLoading(true) instead of isLoading = true.obs;
+  void getSalesProductsForCurrentUser() async {
+    isLoading.value = true;
     try {
-      // Assuming getCurrentUserId() is a method that returns the current user's ID
       int currentUserId = LocalStorage.getUserId() ?? 0;
-      List<Product> fetchedProducts = await productServices
-          .fetchProductsByOwnerId(currentUserId, forRent: false);
+      List<Product> fetchedProducts =
+          await productServices.fetchSalesProductsByOwnerId(currentUserId);
 
       if (fetchedProducts.isNotEmpty) {
         products.assignAll(fetchedProducts);
@@ -164,7 +162,7 @@ class SellPageController extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white,
           );
-          getProductsForCurrentUser();
+          getSalesProductsForCurrentUser();
           clearControllers();
           Get.find<HomeController>().getProducts();
           Get.find<HomeController>().update();
@@ -199,14 +197,14 @@ class SellPageController extends GetxController {
     }
   }
 
-  Future<void> updateProduct(Product product) async {
+  Future<void> updateSalesProduct(Product product) async {
     isLoading.value = true;
     if (updateProductKey.currentState!.validate()) {
       try {
         double? price = double.tryParse(priceController.text);
         int? stockQuantity = int.tryParse(quantityController.text);
         await productServices
-            .updateProduct(
+            .updateSalesProduct(
           productId: product.productId ?? 0,
           name: nameController.text,
           price: price ?? 0,
@@ -226,7 +224,7 @@ class SellPageController extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white,
           );
-          getProductsForCurrentUser();
+          getSalesProductsForCurrentUser();
           clearControllers();
           Get.find<HomeController>().getProducts();
           Get.find<HomeController>().update();
@@ -275,7 +273,7 @@ class SellPageController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        getProductsForCurrentUser();
+        getSalesProductsForCurrentUser();
         clearControllers();
         Get.find<HomeController>().getProducts();
         Get.find<HomeController>().update();
@@ -814,7 +812,7 @@ class SellPageController extends GetxController {
           TextButton(
             child: const Text('Update'),
             onPressed: () async {
-              updateProduct(product);
+              updateSalesProduct(product);
               Get.back();
             },
           ),

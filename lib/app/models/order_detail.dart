@@ -23,6 +23,7 @@ class OrderDetail {
   final String? userName;
   final String? userContact;
   final String? userLocation;
+  final String? fcmToken;
   final String? productName;
   final String? productImage;
 
@@ -40,6 +41,7 @@ class OrderDetail {
     this.userName,
     this.userContact,
     this.userLocation,
+    this.fcmToken,
     this.productName,
     this.productImage,
   });
@@ -60,6 +62,7 @@ class OrderDetail {
         userName: json["user_name"],
         userContact: json["user_contact"],
         userLocation: json["user_location"],
+        fcmToken: json["fcm_token"],
         productName: json["product_name"],
         productImage: json["product_image"],
       );
@@ -78,6 +81,7 @@ class OrderDetail {
         "user_name": userName,
         "user_contact": userContact,
         "user_location": userLocation,
+        "fcm_token": fcmToken,
         "product_name": productName,
         "product_image": productImage,
       };
@@ -96,6 +100,7 @@ class OrderDetail {
     String? userName,
     String? userContact,
     String? userLocation,
+    String? fcmToken,
     String? productName,
     String? productImage,
   }) {
@@ -113,6 +118,7 @@ class OrderDetail {
       userName: userName ?? this.userName,
       userContact: userContact ?? this.userContact,
       userLocation: userLocation ?? this.userLocation,
+      fcmToken: fcmToken ?? this.fcmToken,
       productName: productName ?? this.productName,
       productImage: productImage ?? this.productImage,
     );

@@ -245,6 +245,12 @@ class CartController extends GetxController {
 
   void makePayment({required grandTotal, required otherData}) async {
     try {
+      List<String> sellerFCMs = [];
+      for (CartItem item in selectedCartItems) {
+        sellerFCMs.add(item.product.sellerFcm ?? '');
+        debugPrint(item.product.sellerFcm);
+      }
+      debugPrint("Total fcms count: ${sellerFCMs.length.toString()}");
       isLoading.value = true;
       await orderService
           .makePayment(
@@ -252,6 +258,7 @@ class CartController extends GetxController {
         orderId: createdOrderId.value,
         amountPaid: grandTotal,
         otherData: otherData,
+        sellerFcmTokens: sellerFCMs,
       )
           .then((value) async {
         Get.snackbar(

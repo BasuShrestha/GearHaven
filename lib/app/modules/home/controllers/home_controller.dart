@@ -21,46 +21,6 @@ class HomeController extends GetxController {
   void getProducts() async {
     isLoading = true.obs;
     try {
-      // var url = '$baseUrl/products-sale';
-      // Uri uri = Uri.parse(url);
-      // final response = await http.get(uri);
-
-      // var result = jsonDecode(response.body);
-      // if (response.statusCode == 200) {
-      //   debugPrint(result.toString());
-      //   // Parse and store the products
-      //   products.assignAll(
-      //     result.map<Product>((product) => Product.fromJson(product)).toList(),
-      //   );
-
-      //   Get.snackbar(
-      //     'Success',
-      //     'All Products fetched successfully',
-      //     backgroundColor: Colors.green,
-      //     colorText: Colors.white,
-      //   );
-      //   isLoading = false.obs;
-      //   update();
-      // } else if (response.statusCode == 404) {
-      //   Get.snackbar(
-      //     'Error',
-      //     result['message'],
-      //     backgroundColor: Colors.orange,
-      //     colorText: Colors.white,
-      //   );
-      //   isLoading = false.obs;
-      //   update();
-      // } else if (response.statusCode == 500) {
-      //   Get.snackbar(
-      //     'Error',
-      //     result['message'],
-      //     backgroundColor: Colors.red,
-      //     colorText: Colors.white,
-      //   );
-      //   isLoading = false.obs;
-      //   update();
-      // }
-
       await productServices.fetchAllProducts(forRent: false).then((value) {
         products.value = value;
         Get.snackbar(

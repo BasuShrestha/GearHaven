@@ -65,12 +65,8 @@ class OrdersPageController extends GetxController {
           }
         }
         debugPrint(fetchedProducts.length.toString());
-        Get.snackbar(
-          'All orders fetched successfully',
-          '',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
+        Get.snackbar('All orders fetched successfully', '',
+            backgroundColor: Colors.green, colorText: Colors.white);
         update();
       } else {
         Get.snackbar(
@@ -82,12 +78,12 @@ class OrdersPageController extends GetxController {
         update();
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        e.toString(),
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      // Get.snackbar(
+      //   'Error',
+      //   e.toString(),
+      //   backgroundColor: Colors.red,
+      //   colorText: Colors.white,
+      // );
       debugPrint(e.toString());
     } finally {
       isLoading.value = false;

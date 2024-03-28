@@ -1,14 +1,15 @@
 // To parse this JSON data, do
 //
-//     final product = productFromJson(jsonString);
+//     final rentalProduct = rentalProductFromJson(jsonString);
 
 import 'dart:convert';
 
-Product productFromJson(String str) => Product.fromJson(json.decode(str));
+RentalProduct rentalProductFromJson(String str) =>
+    RentalProduct.fromJson(json.decode(str));
 
-String productToJson(Product data) => json.encode(data.toJson());
+String rentalProductToJson(RentalProduct data) => json.encode(data.toJson());
 
-class Product {
+class RentalProduct {
   final int? productId;
   final String? productName;
   final double? productPrice;
@@ -22,14 +23,14 @@ class Product {
   final int? forRent;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final int? isDeleted;
   final String? userName;
+  final String? ownerFcm;
   final String? categoryName;
   final String? productconditionName;
   final String? productsizeName;
-  final String? sellerFcm;
+  final double? ratePerDay;
 
-  Product({
+  RentalProduct({
     this.productId,
     this.productName,
     this.productPrice,
@@ -43,15 +44,15 @@ class Product {
     this.forRent,
     this.createdAt,
     this.updatedAt,
-    this.isDeleted,
     this.userName,
+    this.ownerFcm,
     this.categoryName,
     this.productconditionName,
     this.productsizeName,
-    this.sellerFcm,
+    this.ratePerDay,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory RentalProduct.fromJson(Map<String, dynamic> json) => RentalProduct(
         productId: json["product_id"],
         productName: json["product_name"],
         productPrice: double.tryParse(json["product_price"].toString()),
@@ -69,12 +70,12 @@ class Product {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
-        isDeleted: json["is_deleted"],
         userName: json["user_name"],
+        ownerFcm: json["owner_fcm"],
         categoryName: json["category_name"],
         productconditionName: json["productcondition_name"],
         productsizeName: json["productsize_name"],
-        sellerFcm: json["seller_fcm"],
+        ratePerDay: double.tryParse(json["rate_per_day"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
@@ -91,11 +92,11 @@ class Product {
         "for_rent": forRent,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-        "is_deleted": isDeleted,
         "user_name": userName,
+        "owner_fcm": ownerFcm,
         "category_name": categoryName,
         "productcondition_name": productconditionName,
         "productsize_name": productsizeName,
-        "seller_fcm": sellerFcm,
+        "rate_per_day": ratePerDay,
       };
 }

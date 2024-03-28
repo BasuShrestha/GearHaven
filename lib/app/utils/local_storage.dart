@@ -15,6 +15,18 @@ class LocalStorage {
     prefs!.setInt('userId', userId);
   }
 
+  static String? getFcmToken() {
+    return prefs != null ? prefs!.getString('fcmToken') : null;
+  }
+
+  static void setFcmToken(String fcmToken) {
+    prefs!.setString('fcmToken', fcmToken);
+  }
+
+  static void removeFcmToken() {
+    prefs!.remove('fcmToken');
+  }
+
   static String? getAccessToken() {
     return prefs != null ? prefs!.getString('accessToken') : null;
   }

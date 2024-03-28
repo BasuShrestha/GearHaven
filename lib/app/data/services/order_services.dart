@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/data/services/remote_services.dart';
@@ -82,22 +84,23 @@ class OrderService extends RemoteServices {
     }
   }
 
-  Future<String> makePayment({
-    required int userId,
-    required int orderId,
-    required double amountPaid,
-    required String otherData,
-  }) async {
+  Future<String> makePayment(
+      {required int userId,
+      required int orderId,
+      required double amountPaid,
+      required String otherData,
+      required List<String> sellerFcmTokens}) async {
     try {
       String endPoint = '/make-payment';
       Response response = await json_dio.post(
         endPoint,
-        data: {
+        data: json.encode({
           "userId": userId,
           "orderId": orderId,
           "amountPaid": amountPaid,
           "otherData": otherData,
-        },
+          "sellerFcmTokens": sellerFcmTokens
+        }),
       );
       if (response.statusCode == 201) {
         var responseData = response.data;
@@ -203,6 +206,7 @@ class OrderService extends RemoteServices {
     required int orderId,
     required int productId,
     required String status,
+    required String buyerFcm,
   }) async {
     try {
       String endpoint = '/order-details';
@@ -211,6 +215,7 @@ class OrderService extends RemoteServices {
         "orderId": orderId,
         "productId": productId,
         "status": status,
+        "buyerFcm": buyerFcm,
       });
       if (response.statusCode == 201) {
         var responseData = response.data;

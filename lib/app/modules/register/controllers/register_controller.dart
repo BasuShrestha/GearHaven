@@ -6,6 +6,7 @@ import 'package:gearhaven/app/models/user.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -43,6 +44,7 @@ class RegisterController extends GetxController {
             "password": passwordController.text,
             "location": locationController.text,
             "contact": contactController.text,
+            "fcmToken": LocalStorage.getFcmToken(),
           };
           rs.register(data).then((value) {
             debugPrint(value.toString());

@@ -1,6 +1,5 @@
-import 'package:gearhaven/app/components/product_card.dart';
+import 'package:gearhaven/app/components/rental_product_card.dart';
 import 'package:gearhaven/app/utils/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -41,18 +40,47 @@ class RentPageView extends GetView<RentPageController> {
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                         ),
-                        itemBuilder: (context, index) => SizedBox(
-                          width: 200,
-                          child: ProductCard(
-                            hideIcon: true,
-                            product: controller.products[index],
+                        itemBuilder: (context, index) => RentalProductCard(
+                          product: controller.products[index],
+                          showDeleteIcon: true,
+                          onDeleteIconPress: () {
+                            controller
+                                .onDeleteProduct(controller.products[index]);
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: CustomColors.accentColor,
                           ),
+                          onIconPress: () {
+                            controller
+                                .onUpdateProduct(controller.products[index]);
+                          },
                         ),
                       )
                     : const Center(
                         child: Text("No Products to display..."),
                       ),
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: CustomColors.primaryColor,
+        onPressed: () {
+          controller.onAddProduct();
+        },
+        label: const Row(
+          children: [
+            Icon(
+              Icons.add,
+              size: 23,
+            ),
+            Text(
+              "Add Product",
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+          ],
         ),
       ),
     );

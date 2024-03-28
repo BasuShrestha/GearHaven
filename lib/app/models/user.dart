@@ -19,7 +19,9 @@ class User {
   final String? userLocation;
   final String? profileImage;
   final int? isVerified;
+  final double? totalIncome;
   final dynamic token;
+  final String? fcmToken;
   final String? refreshToken;
   final DateTime? refreshTokenExpiration;
   final DateTime? createdAt;
@@ -34,7 +36,9 @@ class User {
     this.userLocation,
     this.profileImage,
     this.isVerified,
+    this.totalIncome,
     this.token,
+    this.fcmToken,
     this.refreshToken,
     this.refreshTokenExpiration,
     this.createdAt,
@@ -50,7 +54,9 @@ class User {
         userLocation: json["user_location"],
         profileImage: json["profile_image"],
         isVerified: json["is_verified"],
+        totalIncome: json["total_income"]?.toDouble(),
         token: json["token"],
+        fcmToken: json["fcm_token"],
         refreshToken: json["refresh_token"],
         refreshTokenExpiration: json["refresh_token_expiration"] == null
             ? null
@@ -72,7 +78,9 @@ class User {
         "user_location": userLocation,
         "profile_image": profileImage,
         "is_verified": isVerified,
+        "total_income": totalIncome,
         "token": token,
+        "fcm_token": fcmToken,
         "refresh_token": refreshToken,
         "refresh_token_expiration": refreshTokenExpiration?.toIso8601String(),
         "created_at": createdAt?.toIso8601String(),

@@ -25,7 +25,7 @@ class OrdersDeliveryController extends GetxController {
   }
 
   void updateDeliveryStatus(
-      int orderId, int productId, String newStatus) async {
+      int orderId, int productId, String newStatus, String buyerFcm) async {
     debugPrint("Product Id in update order: $productId");
     debugPrint("New status in update order: $newStatus");
     debugPrint("User Id in update order: ${LocalStorage.getUserId()}");
@@ -36,6 +36,7 @@ class OrdersDeliveryController extends GetxController {
         orderId: orderId,
         productId: productId,
         status: newStatus,
+        buyerFcm: buyerFcm,
       )
           .then((value) {
         Get.snackbar(
@@ -94,12 +95,12 @@ class OrdersDeliveryController extends GetxController {
         update();
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        e.toString(),
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      // Get.snackbar(
+      //   'Error',
+      //   e.toString(),
+      //   backgroundColor: Colors.red,
+      //   colorText: Colors.white,
+      // );
       debugPrint(e.toString());
     } finally {
       isLoading.value = false;
