@@ -33,11 +33,28 @@ class ProfilePageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    firstNameController.text = currentUser.value.userName!.split(' ')[0];
-    lastNameController.text = currentUser.value.userName!.split(' ')[1];
-    emailController.text = currentUser.value.userEmail ?? 'No Email';
-    contactController.text = currentUser.value.userContact ?? 'No Contact';
-    locationController.text = currentUser.value.userLocation ?? 'No Location';
+    firstNameController.text = '';
+    lastNameController.text = '';
+    emailController.text = 'No Email';
+    contactController.text = 'No Contact';
+    locationController.text = 'No Location';
+
+    fetchCurrentUser();
+  }
+
+  void fetchCurrentUser() async {
+    var user = await userServices.getCurrentUser();
+    if (user != null) {
+      currentUser.value = user;
+      firstNameController.text = user.userName?.split(' ')[0] ?? '';
+      lastNameController.text = (user.userName?.split(' ').length ?? 0) > 1
+          ? user.userName!.split(' ')[1]
+          : '';
+      emailController.text = user.userEmail ?? '';
+      contactController.text = user.userContact ?? '';
+      locationController.text = user.userLocation ?? '';
+      update();
+    }
   }
 
   void updateProfile() async {

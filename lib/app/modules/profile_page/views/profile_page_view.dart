@@ -31,11 +31,23 @@ class ProfilePageView extends GetView<ProfilePageController> {
       //   centerTitle: true,
       // ),
       body: Container(
-        padding: const EdgeInsets.fromLTRB(20, 50, 20, 25),
+        padding: const EdgeInsets.fromLTRB(20, 100, 20, 25),
         width: Get.width,
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  child: const Icon(
+                    CupertinoIcons.back,
+                    size: 30,
+                  ),
+                  onTap: () {
+                    Get.back();
+                  },
+                ),
+              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),

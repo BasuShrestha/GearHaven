@@ -1,4 +1,4 @@
-import 'package:gearhaven/app/models/RentalProduct.dart';
+import 'package:gearhaven/app/models/rental_product.dart';
 import 'package:gearhaven/app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +38,7 @@ class RentalProductCard extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Hero(
                 tag: 'product+${product.productId}',
                 child: ClipRRect(
@@ -54,7 +54,7 @@ class RentalProductCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: hideIcon! ? 1 : 2,
               child: Container(
                 padding: const EdgeInsets.all(10),
                 child: Column(
@@ -67,14 +67,8 @@ class RentalProductCard extends StatelessWidget {
                         Text(
                           product.productName?.toUpperCase() ?? '',
                           style: const TextStyle(
-                            fontSize: 15,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          product.productconditionName.toString(),
-                          style: const TextStyle(
-                            fontSize: 12,
                           ),
                         ),
                       ],

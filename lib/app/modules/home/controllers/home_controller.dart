@@ -2,6 +2,7 @@ import 'package:gearhaven/app/data/services/product_services.dart';
 import 'package:gearhaven/app/models/product.dart';
 import 'package:gearhaven/app/modules/cart/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:gearhaven/app/modules/profile_page/controllers/profile_page_controller.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -11,17 +12,19 @@ class HomeController extends GetxController {
   // Observable list of Product objects
   RxList<Product> products = RxList<Product>();
   var quantity = 1.obs;
+
   @override
   void onInit() {
     super.onInit();
     getProducts();
     Get.put(CartController());
+    //Get.put(ProfilePageController());
   }
 
   void getProducts() async {
     isLoading = true.obs;
     try {
-      await productServices.fetchAllProducts(forRent: false).then((value) {
+      await productServices.fetchAllSalesProducts().then((value) {
         products.value = value;
         Get.snackbar(
           'Success',

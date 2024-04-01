@@ -23,12 +23,17 @@ class RentalProduct {
   final int? forRent;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final int? isDeleted;
   final String? userName;
+  final String? userLocation;
+  final String? userContact;
+  final String? userEmail;
   final String? ownerFcm;
   final String? categoryName;
   final String? productconditionName;
   final String? productsizeName;
   final double? ratePerDay;
+  final String? rentingStatus;
 
   RentalProduct({
     this.productId,
@@ -44,12 +49,17 @@ class RentalProduct {
     this.forRent,
     this.createdAt,
     this.updatedAt,
+    this.isDeleted,
     this.userName,
+    this.userLocation,
+    this.userContact,
+    this.userEmail,
     this.ownerFcm,
     this.categoryName,
     this.productconditionName,
     this.productsizeName,
     this.ratePerDay,
+    this.rentingStatus,
   });
 
   factory RentalProduct.fromJson(Map<String, dynamic> json) => RentalProduct(
@@ -70,12 +80,17 @@ class RentalProduct {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        isDeleted: json["is_deleted"],
         userName: json["user_name"],
+        userLocation: json["user_location"],
+        userContact: json["user_contact"],
+        userEmail: json["user_email"],
         ownerFcm: json["owner_fcm"],
         categoryName: json["category_name"],
         productconditionName: json["productcondition_name"],
         productsizeName: json["productsize_name"],
         ratePerDay: double.tryParse(json["rate_per_day"].toString()),
+        rentingStatus: json["renting_status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -92,11 +107,16 @@ class RentalProduct {
         "for_rent": forRent,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "is_deleted": isDeleted,
         "user_name": userName,
+        "user_location": userLocation,
+        "user_contact": userContact,
+        "user_email": userEmail,
         "owner_fcm": ownerFcm,
         "category_name": categoryName,
         "productcondition_name": productconditionName,
         "productsize_name": productsizeName,
         "rate_per_day": ratePerDay,
+        "renting_status": rentingStatus,
       };
 }

@@ -3,11 +3,12 @@ import 'dart:typed_data';
 import 'package:gearhaven/app/components/customs/custom_button.dart';
 import 'package:gearhaven/app/components/customs/custom_textfield.dart';
 import 'package:gearhaven/app/data/services/product_services.dart';
-import 'package:gearhaven/app/models/RentalProduct.dart';
+import 'package:gearhaven/app/models/rental_product.dart';
 import 'package:gearhaven/app/models/product_category.dart';
 import 'package:gearhaven/app/models/product_condition.dart';
 import 'package:gearhaven/app/models/product_size.dart';
 import 'package:flutter/material.dart';
+import 'package:gearhaven/app/modules/main/controllers/main_controller.dart';
 import 'package:gearhaven/app/utils/colors.dart';
 import 'package:gearhaven/app/utils/constants.dart';
 import 'package:gearhaven/app/utils/local_storage.dart';
@@ -23,7 +24,8 @@ class RentPageController extends GetxController {
   GlobalKey<FormState> updateProductKey = GlobalKey<FormState>();
 
   ProductServices productServices = ProductServices();
-  final RxList<RentalProduct> products = RxList<RentalProduct>();
+  RxList<RentalProduct> userProducts = RxList<RentalProduct>();
+  RxList<RentalProduct> allProducts = RxList<RentalProduct>();
   List<ProductCategory> categories = [];
   List<ProductSize> sizes = [];
   List<ProductCondition> conditions = [];
@@ -45,6 +47,7 @@ class RentPageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getAllRentalProducts();
     getRentalProductsForCurrentUser();
     getAllCategories();
     getAllSizes();
@@ -63,6 +66,51 @@ class RentPageController extends GetxController {
     selectedImageBytes.value = null;
   }
 
+  void getAllRentalProducts() async {
+    isLoading = true.obs;
+    try {
+      await productServices.fetchAllRentalProducts().then((value) {
+        for (RentalProduct p in value) {
+          if (p.userLocation ==
+              Get.find<MainController>().currentUser.value.userLocation) {
+            allProducts.add(p);
+          }
+        }
+        //allProducts.value = value;
+        Get.snackbar(
+          'Success',
+          'Sales Products Fetched',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+        isLoading = false.obs;
+        update();
+      }).onError((error, stackTrace) {
+        Get.snackbar(
+          'Error',
+          error.toString(),
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: Duration(seconds: 3),
+        );
+        isLoading = false.obs;
+        update();
+      });
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Something went wrong',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: Duration(seconds: 50),
+      );
+      isLoading = false.obs;
+      update();
+      debugPrint(e.toString());
+    }
+  }
+
   void getRentalProductsForCurrentUser() async {
     isLoading.value = true;
     try {
@@ -72,7 +120,7 @@ class RentPageController extends GetxController {
           .then((value) {
         List<RentalProduct> fetchedProducts = value;
         if (fetchedProducts.isNotEmpty) {
-          products.assignAll(fetchedProducts);
+          userProducts.assignAll(fetchedProducts);
 
           Get.snackbar(
             'Success',
@@ -161,6 +209,7 @@ class RentPageController extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white,
           );
+          getAllRentalProducts();
           getRentalProductsForCurrentUser();
           clearControllers();
           Get.find<RentPageController>().getRentalProductsForCurrentUser();
@@ -177,7 +226,7 @@ class RentPageController extends GetxController {
           );
         });
         isLoading.value = false;
-        debugPrint(products.toString());
+        debugPrint(userProducts.toString());
         update();
       } catch (e) {
         isLoading.value = false;
@@ -225,6 +274,7 @@ class RentPageController extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white,
           );
+          getAllRentalProducts();
           getRentalProductsForCurrentUser();
           clearControllers();
           Get.find<RentPageController>().getRentalProductsForCurrentUser();
@@ -241,7 +291,7 @@ class RentPageController extends GetxController {
           );
         });
         isLoading.value = false;
-        debugPrint(products.toString());
+        debugPrint(userProducts.toString());
         update();
       } catch (e) {
         isLoading.value = false;
@@ -700,6 +750,7 @@ class RentPageController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
+        getAllRentalProducts();
         getRentalProductsForCurrentUser();
         clearControllers();
         Get.find<RentPageController>().getRentalProductsForCurrentUser();
@@ -716,7 +767,7 @@ class RentPageController extends GetxController {
         );
       });
       isLoading.value = false;
-      debugPrint(products.toString());
+      debugPrint(userProducts.toString());
       update();
     } catch (e) {
       isLoading.value = false;

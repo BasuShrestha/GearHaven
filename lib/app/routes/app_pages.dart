@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/Orders_page/bindings/orders_page_binding.dart';
 import '../modules/Orders_page/views/orders_page_view.dart';
+import '../modules/active_rentings/bindings/active_rentings_binding.dart';
+import '../modules/active_rentings/views/active_rentings_view.dart';
 import '../modules/buy_page/bindings/buy_page_binding.dart';
 import '../modules/buy_page/views/buy_page_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
@@ -26,8 +28,14 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/rent_page/bindings/rent_page_binding.dart';
 import '../modules/rent_page/views/rent_page_view.dart';
+import '../modules/rental_delivery/bindings/rental_delivery_binding.dart';
+import '../modules/rental_delivery/views/rental_delivery_view.dart';
+import '../modules/rental_product_description/bindings/rental_product_description_binding.dart';
+import '../modules/rental_product_description/views/rental_product_description_view.dart';
 import '../modules/sell_page/bindings/sell_page_binding.dart';
 import '../modules/sell_page/views/sell_page_view.dart';
+import '../modules/wishlist/bindings/wishlist_binding.dart';
+import '../modules/wishlist/views/wishlist_view.dart';
 
 part 'app_routes.dart';
 
@@ -106,6 +114,26 @@ class AppPages {
       name: _Paths.ORDERS_DELIVERY,
       page: () => const OrdersDeliveryView(),
       binding: OrdersDeliveryBinding(),
+    ),
+    GetPage(
+      name: _Paths.RENTAL_PRODUCT_DESCRIPTION,
+      page: () => const RentalProductDescriptionView(),
+      binding: RentalProductDescriptionBinding(),
+    ),
+    GetPage(
+      name: _Paths.RENTAL_DELIVERY,
+      page: () => const RentalDeliveryView(),
+      binding: RentalDeliveryBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACTIVE_RENTINGS,
+      page: () => const ActiveRentingsView(),
+      binding: ActiveRentingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.WISHLIST,
+      page: () => const WishlistView(),
+      binding: WishlistBinding(),
     ),
   ];
 }

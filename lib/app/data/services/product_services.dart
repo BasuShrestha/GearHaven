@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:gearhaven/app/data/services/remote_services.dart';
-import 'package:gearhaven/app/models/RentalProduct.dart';
+import 'package:gearhaven/app/models/rental_product.dart';
 import 'package:gearhaven/app/models/product.dart';
 import 'package:gearhaven/app/models/product_category.dart';
 import 'package:gearhaven/app/models/product_condition.dart';
@@ -264,15 +264,48 @@ class ProductServices extends RemoteServices {
     }
   }
 
-  Future<List<Product>> fetchAllProducts({bool forRent = false}) async {
+  Future<List<Product>> fetchAllSalesProducts() async {
     try {
-      String endpoint = forRent ? '/products-rent' : '/products-sale';
+      String endpoint = '/products-sale';
       final response = await json_dio.get(endpoint);
       debugPrint(response.data.toString());
 
       List<Product> products = (response.data as List).map((productJson) {
         debugPrint(Product.fromJson(productJson).productPrice.toString());
         return Product.fromJson(productJson);
+      }).toList();
+      return products;
+    } on DioException catch (err) {
+      if (err.response != null) {
+        debugPrint(
+            "Server error occurred: ${err.response!.statusCode} ${err.response!.data}");
+        if (err.response?.statusCode == 500) {
+          return Future.error(err.response?.data['message']);
+        } else {
+          return Future.error(
+              "Error fetching products: ${err.response!.statusCode}");
+        }
+      } else {
+        debugPrint("Network error: ${err.message}");
+        throw Exception(
+            "Network error occurred while fetching products. Please check your connection and try again.");
+      }
+    } catch (e) {
+      debugPrint("Unexpected error fetching products: $e");
+      throw Exception(
+          "Unexpected error occurred while fetching products. Please try again later.");
+    }
+  }
+
+  Future<List<RentalProduct>> fetchAllRentalProducts() async {
+    try {
+      String endpoint = '/products-rent';
+      final response = await json_dio.get(endpoint);
+      debugPrint(response.data.toString());
+
+      List<RentalProduct> products = (response.data as List).map((productJson) {
+        debugPrint(RentalProduct.fromJson(productJson).productPrice.toString());
+        return RentalProduct.fromJson(productJson);
       }).toList();
       return products;
     } on DioException catch (err) {

@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? color;
+  final bool? isDisabled;
   const CustomButton({
     super.key,
     required this.label,
@@ -15,12 +16,14 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.height,
     this.color,
+    this.isDisabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
+    return InkWell(
+      onHover: (value) {},
+      onTap: !isDisabled! ? onPressed : null,
       child: Container(
         width: width ?? 300,
         height: height ?? 50,
@@ -34,7 +37,9 @@ class CustomButton extends StatelessWidget {
               blurRadius: 25,
             ),
           ],
-          color: color ?? Theme.of(context).colorScheme.tertiary,
+          color: isDisabled!
+              ? Colors.grey
+              : color ?? Theme.of(context).colorScheme.tertiary,
         ),
         child: Center(
           child: Text(

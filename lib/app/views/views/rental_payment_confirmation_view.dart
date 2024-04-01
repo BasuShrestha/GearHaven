@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/components/customs/custom_button.dart';
-import 'package:gearhaven/app/models/cart_item.dart';
+import 'package:gearhaven/app/models/rental_product.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/colors.dart';
 
 import 'package:get/get.dart';
 
-class PaymentConfirmationView extends GetView {
-  const PaymentConfirmationView({Key? key}) : super(key: key);
+class RentalPaymentConfirmationView extends GetView {
+  const RentalPaymentConfirmationView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var paymentId = Get.arguments['paymentId'] ?? 0;
-    var orderedItems = Get.arguments['orderedItems'] as List<CartItem>;
-    debugPrint(paymentId);
-    // debugPrint(orderedItems[0].product.productName);
-    double getGrandTotal() {
-      double grandTotal = 0.00;
-      for (CartItem item in orderedItems) {
-        grandTotal += (item.product.productPrice! * item.quantity);
-      }
-      return grandTotal;
-    }
-
-    double grandTotal = getGrandTotal();
-
+    var product = Get.arguments['product'] as RentalProduct;
+    var amountPaid = Get.arguments['amountPaid'];
+    var fromDate = Get.arguments['fromDate'];
+    var toDate = Get.arguments['toDate'];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Payment Confirmation'),
@@ -135,32 +126,73 @@ class PaymentConfirmationView extends GetView {
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  SizedBox(
-                    height: 150,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: orderedItems.length,
-                      itemBuilder: (context, index) {
-                        var orderedItem = orderedItems[index];
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              orderedItem.product.productName ?? '',
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                            Text(
-                              "${(orderedItem.product.productPrice ?? 0) * orderedItem.quantity}",
-                              style: const TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Product',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        product.productName ?? '',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'For Rent',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'From',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        fromDate.toString().split(' ')[0],
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'To',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        toDate.toString().split(' ')[0],
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     width: Get.width,
@@ -177,9 +209,10 @@ class PaymentConfirmationView extends GetView {
                         ),
                       ),
                       Text(
-                        grandTotal.toString(),
+                        amountPaid.toString(),
                         style: const TextStyle(
                           fontSize: 20,
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ],

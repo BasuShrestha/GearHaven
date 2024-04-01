@@ -13,7 +13,7 @@ class OrdersDeliveryController extends GetxController {
     "Pending",
     "Dispatched",
     "In Transit",
-    "Delivered"
+    "Delivered",
   ];
 
   OrderService orderService = OrderService();
@@ -25,7 +25,11 @@ class OrdersDeliveryController extends GetxController {
   }
 
   void updateDeliveryStatus(
-      int orderId, int productId, String newStatus, String buyerFcm) async {
+    int orderId,
+    int productId,
+    String newStatus,
+    String buyerFcm,
+  ) async {
     debugPrint("Product Id in update order: $productId");
     debugPrint("New status in update order: $newStatus");
     debugPrint("User Id in update order: ${LocalStorage.getUserId()}");

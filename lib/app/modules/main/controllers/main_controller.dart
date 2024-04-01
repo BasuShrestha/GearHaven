@@ -2,7 +2,6 @@ import 'package:gearhaven/app/data/services/user_services.dart';
 import 'package:gearhaven/app/models/user.dart';
 import 'package:gearhaven/app/modules/Orders_page/views/orders_page_view.dart';
 import 'package:gearhaven/app/modules/home/views/home_view.dart';
-import 'package:gearhaven/app/modules/profile_page/views/profile_page_view.dart';
 import 'package:gearhaven/app/modules/rent_page/views/rent_page_view.dart';
 import 'package:gearhaven/app/modules/sell_page/views/sell_page_view.dart';
 import 'package:gearhaven/app/utils/local_storage.dart';
@@ -25,7 +24,7 @@ class MainController extends GetxController {
     OrdersPageView(),
     SellPageView(),
     RentPageView(),
-    ProfilePageView(),
+    // ProfilePageView(),
   ];
 
   @override

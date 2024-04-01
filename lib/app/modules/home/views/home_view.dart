@@ -1,7 +1,10 @@
 import 'package:gearhaven/app/components/product_card.dart';
 import 'package:gearhaven/app/models/product.dart';
 import 'package:gearhaven/app/modules/cart/controllers/cart_controller.dart';
+import 'package:gearhaven/app/modules/profile_page/controllers/profile_page_controller.dart';
+import 'package:gearhaven/app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
+import 'package:gearhaven/app/utils/assets.dart';
 import 'package:gearhaven/app/utils/colors.dart';
 import 'package:gearhaven/app/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,21 +20,81 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     var controller = Get.put(HomeController());
     var cartController = Get.put(CartController());
+    var wishlistController = Get.put(WishlistController());
+    var profileController = Get.put(ProfilePageController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home View'),
-        centerTitle: true,
-        //backgroundColor: CustomColors.backgroundColor,
-        actions: [
-          IconButton(
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: SearchView(),
-              );
-            },
-            icon: const Icon(Icons.search),
+        toolbarHeight: 100,
+        title: GestureDetector(
+          onTap: () {
+            showSearch(
+              context: context,
+              delegate: SearchView(),
+            );
+          },
+          child: Container(
+            width: 200,
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Search...",
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(
+                    Icons.search,
+                    color: CustomColors.accentColor,
+                  ),
+                ),
+              ],
+            ),
           ),
+        ),
+        centerTitle: true,
+        leading: InkWell(
+          onTap: () => Get.toNamed(Routes.PROFILE_PAGE),
+          child: Obx(
+            () => Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 2,
+                  color: CustomColors.accentColor,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: profileController
+                            .currentUser.value.profileImage !=
+                        null
+                    ? NetworkImage(
+                        getUserImageUrl(
+                            profileController.currentUser.value.profileImage),
+                      )
+                    : profileController.selectedImageBytes.value != null
+                        ? NetworkImage(
+                            getUserImageUrl(profileController
+                                .currentUser.value.profileImage),
+                          )
+                        : const AssetImage(Assets.profileImagePlaceholder)
+                            as ImageProvider,
+              ),
+            ),
+          ),
+        ),
+        actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: GestureDetector(
@@ -59,6 +122,47 @@ class HomeView extends GetView<HomeController> {
                         () => Center(
                           child: Text(
                             cartController.cart.length.toString(),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.WISHLIST);
+              },
+              child: Stack(
+                children: [
+                  const Icon(
+                    CupertinoIcons.heart,
+                    size: 35,
+                    color: CustomColors.accentColor,
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      width: 17,
+                      height: 17,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Obx(
+                        () => Center(
+                          child: Text(
+                            wishlistController.wishlist.length.toString(),
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.white,

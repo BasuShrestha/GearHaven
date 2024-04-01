@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:gearhaven/app/components/sold_product_card.dart';
+import 'package:gearhaven/app/components/active_renting_card.dart';
 import 'package:gearhaven/app/utils/colors.dart';
 import 'package:gearhaven/app/utils/local_storage.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/orders_delivery_controller.dart';
+import '../controllers/active_rentings_controller.dart';
 
-class OrdersDeliveryView extends GetView<OrdersDeliveryController> {
-  const OrdersDeliveryView({Key? key}) : super(key: key);
+class ActiveRentingsView extends GetView<ActiveRentingsController> {
+  const ActiveRentingsView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(OrdersDeliveryController());
+    Get.put(ActiveRentingsController());
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Orders to deliver',
+          'Active Rentings',
           style: TextStyle(
             color: CustomColors.primaryColor,
             fontWeight: FontWeight.bold,
@@ -24,14 +24,15 @@ class OrdersDeliveryView extends GetView<OrdersDeliveryController> {
         backgroundColor: CustomColors.backgroundColor,
         centerTitle: true,
       ),
-      body: GetBuilder<OrdersDeliveryController>(
+      body: GetBuilder<ActiveRentingsController>(
         builder: (controller) => Container(
+          height: Get.height,
           color: CustomColors.backgroundColor,
           padding: const EdgeInsets.all(16.0),
-          child: controller.orders.isEmpty
+          child: controller.activeRentings.isEmpty
               ? const Center(
                   child: Text(
-                    'No products ordered yet...',
+                    'No active rentings...',
                     style: TextStyle(
                       fontSize: 22,
                       color: CustomColors.primaryColor,
@@ -40,31 +41,38 @@ class OrdersDeliveryView extends GetView<OrdersDeliveryController> {
                 )
               : ListView.builder(
                   shrinkWrap: true,
-                  itemCount: controller.orders.length,
+                  itemCount: controller.activeRentings.length,
                   itemBuilder: (context, index) => Stack(
                     children: [
-                      SoldProductCard(
-                        orderDetail: controller.orders[index],
+                      RentingCard(
+                        renting: controller.activeRentings[index],
                         index: index,
-                        deliveryStatuses: controller.deliveryStatuses,
+                        rentingStatuses: controller.rentingStatuses,
                         onStatusChanged: (newStatus) {
                           debugPrint(
                               "Device FCM Token: ${LocalStorage.getFcmToken()}");
                           debugPrint(
-                              "Buyer FCM Token: ${controller.orders[index].fcmToken}");
-                          controller.updateDeliveryStatus(
-                            controller.orders[index].orderId ?? 0,
-                            controller.orders[index].productId ?? 0,
-                            newStatus,
-                            controller.orders[index].fcmToken ?? 'No Fcm',
+                              "Buyer FCM Token: ${controller.activeRentings[index].fcmToken}");
+                          debugPrint(
+                              controller.activeRentings[index].productName);
+                          controller.updateRentingStatus(
+                            //controller.activeRentings[index].orderId ?? 0,
+                            rentingId:
+                                controller.activeRentings[index].rentingId ?? 0,
+                            productId:
+                                controller.activeRentings[index].productId ?? 0,
+                            productName:
+                                controller.activeRentings[index].productName,
+                            newStatus: newStatus,
+                            // controller.activeRentings[index].fcmToken ?? 'No Fcm',
                           );
                         },
                       ),
                       Positioned(
                         right: 10,
-                        top: 20,
+                        top: 50,
                         child: Text(
-                          'Total: ${controller.orders[index].lineTotal}',
+                          'Total: ${controller.activeRentings[index].amountPaid}',
                           style: const TextStyle(fontSize: 14),
                         ),
                       ),

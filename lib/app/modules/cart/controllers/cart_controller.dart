@@ -253,9 +253,10 @@ class CartController extends GetxController {
       debugPrint("Total fcms count: ${sellerFCMs.length.toString()}");
       isLoading.value = true;
       await orderService
-          .makePayment(
+          .makeSalesPayment(
         userId: LocalStorage.getUserId() ?? 0,
-        orderId: createdOrderId.value,
+        transactionId: createdOrderId.value,
+        transactionType: "order",
         amountPaid: grandTotal,
         otherData: otherData,
         sellerFcmTokens: sellerFCMs,

@@ -17,6 +17,10 @@ abstract class Routes {
   static const CART = _Paths.CART;
   static const ORDERS_PAGE = _Paths.ORDERS_PAGE;
   static const ORDERS_DELIVERY = _Paths.ORDERS_DELIVERY;
+  static const RENTAL_PRODUCT_DESCRIPTION = _Paths.RENTAL_PRODUCT_DESCRIPTION;
+  static const RENTAL_DELIVERY = _Paths.RENTAL_DELIVERY;
+  static const ACTIVE_RENTINGS = _Paths.ACTIVE_RENTINGS;
+  static const WISHLIST = _Paths.WISHLIST;
 }
 
 abstract class _Paths {
@@ -35,4 +39,8 @@ abstract class _Paths {
   static const CART = '/cart';
   static const ORDERS_PAGE = '/orders-page';
   static const ORDERS_DELIVERY = '/orders-delivery';
+  static const RENTAL_PRODUCT_DESCRIPTION = '/rental-product-description';
+  static const RENTAL_DELIVERY = '/rental-delivery';
+  static const ACTIVE_RENTINGS = '/active-rentings';
+  static const WISHLIST = '/wishlist';
 }

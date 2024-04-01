@@ -79,12 +79,12 @@ class MainView extends GetView<MainController> {
                 label: "Rent",
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person_2_outlined),
-                activeIcon: Icon(Icons.person_2),
-                label: "Profile",
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.person_2_outlined),
+              //   activeIcon: Icon(Icons.person_2),
+              //   label: "Profile",
+              //   backgroundColor: Theme.of(context).colorScheme.primary,
+              // ),
             ],
           ),
           // NavigationBar(
