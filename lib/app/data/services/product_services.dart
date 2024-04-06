@@ -297,6 +297,45 @@ class ProductServices extends RemoteServices {
     }
   }
 
+  Future<List<Product>> fetchFilteredSaleProducts({
+    int? categoryId,
+    int? conditionId,
+    int? sizeId,
+    double? priceMin,
+    double? priceMax,
+  }) async {
+    try {
+      String endpoint = '/products-sale/filtered';
+      Map<String, dynamic> filters = {};
+
+      // Add filters to the request body if they are not null
+      if (categoryId != null) filters['categoryId'] = categoryId;
+      if (conditionId != null) filters['conditionId'] = conditionId;
+      if (sizeId != null) filters['sizeId'] = sizeId;
+      if (priceMin != null) filters['priceMin'] = priceMin;
+      if (priceMax != null) filters['priceMax'] = priceMax;
+
+      final response = await json_dio.post(endpoint, data: filters);
+      debugPrint(response.data.toString());
+
+      if (response.statusCode == 200) {
+        List<Product> products = (response.data as List)
+            .map((productJson) => Product.fromJson(productJson))
+            .toList();
+        return products;
+      } else {
+        throw Exception(
+            "Server responded with status code: ${response.statusCode}");
+      }
+    } on DioException catch (dioError) {
+      debugPrint("DioException occurred: ${dioError.message}");
+      throw Exception("DioException: ${dioError.message}");
+    } catch (e) {
+      debugPrint("Unexpected error occurred: $e");
+      throw Exception("Error fetching filtered products: $e");
+    }
+  }
+
   Future<List<RentalProduct>> fetchAllRentalProducts() async {
     try {
       String endpoint = '/products-rent';

@@ -177,6 +177,16 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
           ),
+          IconButton(
+            icon: Icon(
+              Icons.filter_list,
+              size: 35,
+              color: CustomColors.accentColor,
+            ),
+            onPressed: () {
+              controller.showFilterDialog(context);
+            },
+          ),
           // const Padding(
           //   padding: EdgeInsets.only(right: 10),
           //   child: Icon(
@@ -192,6 +202,7 @@ class HomeView extends GetView<HomeController> {
       body: GetBuilder<HomeController>(
         builder: (context) => Container(
           padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+          height: Get.height,
           color: CustomColors.backgroundColor,
           child: Obx(
             () => controller.isLoading.value

@@ -1,18 +1,16 @@
-import 'dart:convert';
-
 // ignore: unused_import
 import 'package:gearhaven/app/data/services/auth_services.dart';
 import 'package:gearhaven/app/models/user.dart';
-import 'package:gearhaven/app/routes/app_pages.dart';
-import 'package:gearhaven/app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/local_storage.dart';
+import 'package:gearhaven/app/views/views/email_verification_view.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 class RegisterController extends GetxController {
   final count = 0.obs;
   var isLoading = false.obs;
+  var fullHashValue = '';
   AuthServices rs = AuthServices();
   GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   TextEditingController firstNameController = TextEditingController();
@@ -25,7 +23,7 @@ class RegisterController extends GetxController {
 
   List<User> allUsers = [];
 
-  void register() {
+  void register() async {
     if (registerFormKey.currentState!.validate()) {
       if (passwordController.text != confirmPasswordController.text) {
         Get.snackbar(
@@ -46,7 +44,7 @@ class RegisterController extends GetxController {
             "contact": contactController.text,
             "fcmToken": LocalStorage.getFcmToken(),
           };
-          rs.register(data).then((value) {
+          await rs.register(data).then((value) {
             debugPrint(value.toString());
             Get.snackbar(
               "Success",
@@ -55,8 +53,9 @@ class RegisterController extends GetxController {
               colorText: Colors.white,
               duration: const Duration(seconds: 1),
             );
+            fullHashValue = value.fullHash ?? '';
+            Get.to(() => const EmailVerificationView());
             isLoading.value = false;
-            Get.offAllNamed(Routes.LOGIN);
           }).onError((error, stackTrace) {
             Get.snackbar(
               "Error",
@@ -81,65 +80,94 @@ class RegisterController extends GetxController {
     }
   }
 
-  Future<void> onRegister() async {
-    if (registerFormKey.currentState!.validate()) {
-      if (passwordController.text != confirmPasswordController.text) {
+  Future<void> verifyEnteredOTP(String email, String otp) async {
+    try {
+      isLoading(true);
+      await rs.verifyUserOTP(email, otp, fullHashValue).then((value) {
         Get.snackbar(
-          "Error",
-          "Passwords don't match!",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-      }
-      String url = '$baseUrl/register';
-      Uri uri = Uri.parse(url);
-      final response = await http.post(
-        uri,
-        body: jsonEncode(
-          {
-            "username":
-                '${firstNameController.text} ${lastNameController.text}',
-            "email": emailController.text,
-            "password": passwordController.text,
-            "location": locationController.text,
-            "contact": contactController.text,
-          },
-        ),
-        headers: {"Content-Type": "application/json"},
-      );
-
-      Map<String, dynamic> result = json.decode(response.body);
-      if (response.statusCode == 200) {
-        debugPrint(result.toString());
-        Get.snackbar(
-          "Success",
-          result['message'],
+          'Success',
+          value,
           backgroundColor: Colors.green,
-          colorText: Colors.white,
+          duration: const Duration(
+            seconds: 1,
+          ),
         );
-
-        Get.back();
-      } else if (response.statusCode == 400) {
-        debugPrint(result.toString());
+        Get.offAllNamed(Routes.LOGIN);
+      }).onError((error, stackTrace) {
         Get.snackbar(
-          "Error",
-          result['errors'][0]['msg'],
+          'Success',
+          error.toString(),
           backgroundColor: Colors.red,
-          colorText: Colors.white,
+          duration: const Duration(
+            seconds: 3,
+          ),
         );
-      } else if (response.statusCode == 409) {
-        debugPrint(result.toString());
-        Get.snackbar(
-          "Error",
-          result['message'],
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-      } else {
-        debugPrint("failed to load");
-      }
+      });
+    } catch (e) {
+      Get.snackbar(
+        'Success',
+        e.toString(),
+        backgroundColor: Colors.red,
+        duration: const Duration(
+          seconds: 3,
+        ),
+      );
     }
   }
+
+  Future<void> resendUserOTP(String email, String userName) async {
+    try {
+      isLoading(true);
+      await rs.resendUserOTP(email, userName).then((value) {
+        Get.snackbar(
+          'Success',
+          value,
+          backgroundColor: Colors.green,
+          duration: const Duration(
+            seconds: 1,
+          ),
+        );
+      }).onError((error, stackTrace) {
+        Get.snackbar(
+          'Error',
+          error.toString(),
+          backgroundColor: Colors.red,
+          duration: const Duration(
+            seconds: 3,
+          ),
+        );
+      });
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        e.toString(),
+        backgroundColor: Colors.red,
+        duration: const Duration(
+          seconds: 3,
+        ),
+      );
+    }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  void increment() => count.value++;
+}
+
+
 
   // Future<void> onRegister() async {
   //   if (registerFormKey.currentState!.validate()) {
@@ -191,21 +219,3 @@ class RegisterController extends GetxController {
   //     }
   //   }
   // }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
-}
