@@ -7,11 +7,7 @@ Future<String> getIp() async {
   return data;
 }
 
-// String getDeviceIp = () async {
-//   String ip = await getIp();
-//   return ip;
-// };
-const ipAddress = '172.16.17.73';
+const ipAddress = '192.168.1.67';
 const port = '5000';
 
 const baseUrl = 'http://$ipAddress:$port';

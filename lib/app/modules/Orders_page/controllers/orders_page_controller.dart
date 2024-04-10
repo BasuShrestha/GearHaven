@@ -65,8 +65,8 @@ class OrdersPageController extends GetxController {
           }
         }
         debugPrint(fetchedProducts.length.toString());
-        Get.snackbar('All orders fetched successfully', '',
-            backgroundColor: Colors.green, colorText: Colors.white);
+        // Get.snackbar('All orders fetched successfully', '',
+        //     backgroundColor: Colors.green, colorText: Colors.white);
         update();
       } else {
         Get.snackbar(

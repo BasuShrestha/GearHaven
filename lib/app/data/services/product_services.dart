@@ -389,7 +389,7 @@ class ProductServices extends RemoteServices {
           return Future.error("Unauthorized access. Please login again.");
         } else {
           return Future.error(
-              "Error fetching products: ${e.response!.statusCode}");
+              "Error fetching products: ${e.response!.statusCode} ${e.response!.data}");
         }
       } else {
         debugPrint("Network error: ${e.message}");

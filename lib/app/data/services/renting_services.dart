@@ -68,7 +68,7 @@ class RentingService extends RemoteServices {
         return Future.error("Error in the code");
       }
     } catch (e) {
-      return "Exception: $e";
+      return "Exception in services: $e";
     }
   }
 

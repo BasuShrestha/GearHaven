@@ -94,11 +94,13 @@ class RentalProductDescriptionController extends GetxController {
         Get.find<RentPageController>().userProducts.clear();
         Get.find<RentPageController>().getRentalProductsForCurrentUser();
         Get.find<RentPageController>().update();
-        Get.find<WishlistController>()
-            .wishlist
-            .remove(Get.find<WishlistController>().wishlist.firstWhere(
-                  (element) => element.productId == productId,
-                ));
+        Get.find<WishlistController>().wishlist.isNotEmpty
+            ? Get.find<WishlistController>()
+                .wishlist
+                .remove(Get.find<WishlistController>().wishlist.firstWhere(
+                      (element) => element.productId == productId,
+                    ))
+            : null;
         Get.find<WishlistController>().getWishlistForUser();
         Get.find<WishlistController>().update();
         isLoading.value = false;

@@ -33,20 +33,21 @@ class WishlistController extends GetxController {
       if (fetchedProducts.isNotEmpty) {
         wishlist.assignAll(fetchedProducts);
         debugPrint(fetchedProducts.length.toString());
-        Get.snackbar(
-          'All wishlist fetched successfully',
-          '',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
+        // Get.snackbar(
+        //   'All wishlist fetched successfully',
+        //   '',
+        //   backgroundColor: Colors.green,
+        //   colorText: Colors.white,
+        // );
         update();
       } else {
-        Get.snackbar(
-          'Info',
-          'No wishlist found',
-          backgroundColor: Colors.blue,
-          colorText: Colors.white,
-        );
+        // Get.snackbar(
+        //   'Info',
+        //   'No wishlist found',
+        //   backgroundColor: Colors.blue,
+        //   colorText: Colors.white,
+        // );
+        debugPrint("No wishlist items");
         update();
       }
     } catch (e) {

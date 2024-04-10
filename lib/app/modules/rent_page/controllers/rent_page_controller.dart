@@ -77,13 +77,13 @@ class RentPageController extends GetxController {
           }
         }
         //allProducts.value = value;
-        Get.snackbar(
-          'Success',
-          'Sales Products Fetched',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-        );
+        // Get.snackbar(
+        //   'Success',
+        //   'Sales Products Fetched',
+        //   backgroundColor: Colors.green,
+        //   colorText: Colors.white,
+        //   duration: Duration(seconds: 3),
+        // );
         isLoading = false.obs;
         update();
       }).onError((error, stackTrace) {
@@ -122,12 +122,12 @@ class RentPageController extends GetxController {
         if (fetchedProducts.isNotEmpty) {
           userProducts.assignAll(fetchedProducts);
 
-          Get.snackbar(
-            'Success',
-            'Sale Products fetched successfully for the current user',
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-          );
+          // Get.snackbar(
+          //   'Success',
+          //   'Sale Products fetched successfully for the current user',
+          //   backgroundColor: Colors.green,
+          //   colorText: Colors.white,
+          // );
         } else {
           Get.snackbar(
             'Info',

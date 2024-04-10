@@ -5,7 +5,7 @@
 
 
     <application
-        android:label="gearhaven"
+        android:label="GearHaven"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">
