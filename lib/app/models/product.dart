@@ -11,7 +11,7 @@ String productToJson(Product data) => json.encode(data.toJson());
 class Product {
   final int? productId;
   final String? productName;
-  final double? productPrice;
+  final int? productPrice;
   final int? productstockQuantity;
   final String? productDesc;
   final String? productImage;
@@ -54,7 +54,7 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         productId: json["product_id"],
         productName: json["product_name"],
-        productPrice: double.tryParse(json["product_price"].toString()),
+        productPrice: json["product_price"],
         productstockQuantity: json["productstock_quantity"],
         productDesc: json["product_desc"],
         productImage: json["product_image"],

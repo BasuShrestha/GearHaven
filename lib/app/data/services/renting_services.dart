@@ -18,7 +18,7 @@ class RentingService extends RemoteServices {
     required String paymentStatus,
     required String rentingStatus,
     required String transactionType,
-    required double amountPaid,
+    required int amountPaid,
     required String otherData,
     required String productName,
     required String ownerFcmToken,

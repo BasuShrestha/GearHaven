@@ -444,70 +444,7 @@ class ProfilePageView extends GetView<ProfilePageController> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            showCupertinoDialog(
-                              barrierDismissible: true,
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 5,
-                                      horizontal: 15,
-                                    ),
-                                    width: 450,
-                                    height: 100,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Are you sure you want to log out?",
-                                          style: TextStyle(
-                                            fontSize: 19,
-                                            color: CustomColors.primaryColor,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            CustomButton(
-                                              width: 50,
-                                              height: 50,
-                                              labelStyle: TextStyle(
-                                                fontSize: 19,
-                                                color: Colors.white,
-                                              ),
-                                              label: 'Yes',
-                                              onPressed: () {
-                                                LocalStorage.removeAll();
-                                                Get.toNamed(Routes.LOGIN);
-                                              },
-                                            ),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            CustomButton(
-                                              width: 50,
-                                              height: 50,
-                                              labelStyle: TextStyle(
-                                                fontSize: 19,
-                                                color: Colors.white,
-                                              ),
-                                              label: 'No',
-                                              onPressed: () {
-                                                Get.back();
-                                              },
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
+                            controller.onlogOut();
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

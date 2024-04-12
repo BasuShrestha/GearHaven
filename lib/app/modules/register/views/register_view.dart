@@ -37,7 +37,7 @@ class RegisterView extends GetView<RegisterController> {
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 20,
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 30),
@@ -57,7 +57,7 @@ class RegisterView extends GetView<RegisterController> {
                             },
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 15,
                           ),
                           CustomTextfield(
                             controller: controller.lastNameController,
@@ -71,7 +71,7 @@ class RegisterView extends GetView<RegisterController> {
                             },
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 15,
                           ),
                           CustomTextfield(
                             controller: controller.emailController,
@@ -81,7 +81,9 @@ class RegisterView extends GetView<RegisterController> {
                               Pattern pattern =
                                   r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                               RegExp regex = RegExp(pattern as String);
-                              if (!regex.hasMatch(value ?? '')) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your email';
+                              } else if (!regex.hasMatch(value ?? '')) {
                                 return 'Please enter a valid email';
                               } else {
                                 return null;
@@ -89,7 +91,7 @@ class RegisterView extends GetView<RegisterController> {
                             },
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 15,
                           ),
                           CustomTextfield(
                             controller: controller.passwordController,
@@ -119,7 +121,7 @@ class RegisterView extends GetView<RegisterController> {
                             },
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 15,
                           ),
                           CustomTextfield(
                             controller: controller.confirmPasswordController,
@@ -135,9 +137,10 @@ class RegisterView extends GetView<RegisterController> {
                             },
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 15,
                           ),
                           CustomTextfield(
+                            isContactNumber: true,
                             controller: controller.contactController,
                             label: "Contact Number",
                             textInputAction: TextInputAction.next,
@@ -152,7 +155,7 @@ class RegisterView extends GetView<RegisterController> {
                             },
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 15,
                           ),
                           CustomTextfield(
                             controller: controller.locationController,
@@ -160,13 +163,13 @@ class RegisterView extends GetView<RegisterController> {
                             textInputAction: TextInputAction.done,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Please enter your current address";
+                                return "Please enter your address";
                               }
                               return null;
                             },
                           ),
                           SizedBox(
-                            height: 50,
+                            height: 25,
                           ),
                           CustomButton(
                             label: "Register",

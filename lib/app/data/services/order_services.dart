@@ -11,7 +11,7 @@ class OrderService extends RemoteServices {
 
   Future<OrderResponse> createOrder({
     required int userId,
-    required double orderTotal,
+    required int orderTotal,
     required List cartItems,
   }) async {
     try {
@@ -88,7 +88,8 @@ class OrderService extends RemoteServices {
       {required int userId,
       required int transactionId,
       required String transactionType,
-      required double amountPaid,
+      required int amountPaid,
+      required int orderId,
       required String otherData,
       required List<String> sellerFcmTokens}) async {
     try {
@@ -97,6 +98,7 @@ class OrderService extends RemoteServices {
         endPoint,
         data: json.encode({
           "userId": userId,
+          "orderId": orderId,
           "transactionId": transactionId,
           "transactionType": transactionType,
           "amountPaid": amountPaid,
@@ -142,7 +144,7 @@ class OrderService extends RemoteServices {
     required String paymentStatus,
     required String rentingStatus,
     required String transactionType,
-    required double amountPaid,
+    required int amountPaid,
     required String otherData,
     required String productName,
     required String ownerFcmToken,

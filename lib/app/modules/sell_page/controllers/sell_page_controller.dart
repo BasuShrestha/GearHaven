@@ -138,7 +138,7 @@ class SellPageController extends GetxController {
     isLoading.value = true;
     if (uploadProductKey.currentState!.validate()) {
       try {
-        double? price = double.tryParse(priceController.text);
+        int? price = int.tryParse(priceController.text);
         int? stockQuantity = int.tryParse(quantityController.text);
         //int? userId = int.tryParse(LocalStorage.getUserId().toString());
         await productServices
@@ -201,7 +201,7 @@ class SellPageController extends GetxController {
     isLoading.value = true;
     if (updateProductKey.currentState!.validate()) {
       try {
-        double? price = double.tryParse(priceController.text);
+        int? price = int.tryParse(priceController.text);
         int? stockQuantity = int.tryParse(quantityController.text);
         await productServices
             .updateSalesProduct(

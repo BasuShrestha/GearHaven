@@ -161,7 +161,7 @@ class RentalConfirmationView
                                 ownerId: product.productownerId,
                                 fromDate: controller.fromDate.value.toString(),
                                 toDate: controller.toDate.value.toString(),
-                                amountPaid: double.tryParse(total.toString()),
+                                amountPaid: int.tryParse(total.toString()),
                                 otherData: jsonEncode({
                                   "idx": v.idx,
                                   "amount": v.amount,

@@ -20,8 +20,8 @@ class HomeController extends GetxController {
   var selectedCategory = Rxn<ProductCategory>();
   var selectedSize = Rxn<ProductSize>();
   var selectedCondition = Rxn<ProductCondition>();
-  var priceMin = Rxn<double>();
-  var priceMax = Rxn<double>();
+  var priceMin = Rxn<int>();
+  var priceMax = Rxn<int>();
 
   @override
   void onInit() {
@@ -173,12 +173,12 @@ class HomeController extends GetxController {
               TextField(
                 decoration: InputDecoration(labelText: 'Minimum Price'),
                 keyboardType: TextInputType.number,
-                onChanged: (value) => priceMin.value = double.tryParse(value),
+                onChanged: (value) => priceMin.value = int.tryParse(value),
               ),
               TextField(
                 decoration: InputDecoration(labelText: 'Maximum Price'),
                 keyboardType: TextInputType.number,
-                onChanged: (value) => priceMax.value = double.tryParse(value),
+                onChanged: (value) => priceMax.value = int.tryParse(value),
               ),
             ],
           ),
@@ -224,8 +224,8 @@ class HomeController extends GetxController {
       {int? categoryId,
       int? conditionId,
       int? sizeId,
-      double? priceMin,
-      double? priceMax}) async {
+      int? priceMin,
+      int? priceMax}) async {
     isLoading(true);
     try {
       var filteredProducts = await productServices.fetchFilteredSaleProducts(

@@ -61,7 +61,9 @@ class LoginView extends GetView<LoginController> {
                                       Pattern pattern =
                                           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                                       RegExp regex = RegExp(pattern as String);
-                                      if (!regex.hasMatch(value ?? '')) {
+                                      if (value!.isEmpty) {
+                                        return 'Email cannot be empty';
+                                      } else if (!regex.hasMatch(value ?? '')) {
                                         return 'Please enter a valid email';
                                       } else {
                                         return null;
@@ -77,7 +79,7 @@ class LoginView extends GetView<LoginController> {
                                     isPassword: true,
                                     validator: (value) {
                                       if (value!.isEmpty) {
-                                        return "Please enter your password";
+                                        return "Password cannot be empty";
                                       }
                                       return null;
                                     },

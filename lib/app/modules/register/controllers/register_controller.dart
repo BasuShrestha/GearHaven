@@ -1,4 +1,5 @@
 // ignore: unused_import
+import 'package:gearhaven/app/components/customs/custom_snackbar.dart';
 import 'package:gearhaven/app/data/services/auth_services.dart';
 import 'package:gearhaven/app/models/user.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class RegisterController extends GetxController {
             "password": passwordController.text,
             "location": locationController.text,
             "contact": contactController.text,
-            "fcmToken": LocalStorage.getFcmToken(),
+            //"fcmToken": LocalStorage.getFcmToken(),
           };
           await rs.register(data).then((value) {
             debugPrint(value.toString());
@@ -57,12 +58,10 @@ class RegisterController extends GetxController {
             Get.to(() => const EmailVerificationView());
             isLoading.value = false;
           }).onError((error, stackTrace) {
-            Get.snackbar(
-              "Error",
-              error.toString(),
-              backgroundColor: Colors.red,
-              colorText: Colors.white,
-              duration: const Duration(seconds: 3),
+            CustomSnackbar.infoSnackbar(
+              context: Get.context,
+              title: 'Info',
+              message: error.toString(),
             );
             isLoading.value = false;
           });
@@ -119,13 +118,18 @@ class RegisterController extends GetxController {
     try {
       isLoading(true);
       await rs.resendUserOTP(email, userName).then((value) {
-        Get.snackbar(
-          'Success',
-          value,
-          backgroundColor: Colors.green,
-          duration: const Duration(
-            seconds: 1,
-          ),
+        // Get.snackbar(
+        //   'Success',
+        //   value,
+        //   backgroundColor: Colors.green,
+        //   duration: const Duration(
+        //     seconds: 1,
+        //   ),
+        // );
+        CustomSnackbar.infoSnackbar(
+          context: Get.context,
+          title: 'Info',
+          message: 'Verification email has been resent',
         );
       }).onError((error, stackTrace) {
         Get.snackbar(

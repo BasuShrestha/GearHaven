@@ -14,7 +14,7 @@ class ProductServices extends RemoteServices {
 
   Future<String> uploadProduct({
     required String name,
-    double? price,
+    int? price,
     required int quantity,
     required String description,
     required String fileName,
@@ -23,7 +23,7 @@ class ProductServices extends RemoteServices {
     required int size,
     int? condition,
     required int ownerId,
-    double? rateForDay,
+    int? rateForDay,
     required bool forRent,
   }) async {
     FormData formData = FormData.fromMap({
@@ -66,7 +66,7 @@ class ProductServices extends RemoteServices {
   Future<String> updateSalesProduct({
     required int productId,
     required String name,
-    required double price,
+    required int price,
     required int quantity,
     required String description,
     required String fileName,
@@ -122,7 +122,7 @@ class ProductServices extends RemoteServices {
   Future<String> updateRentalProduct({
     required int productId,
     required String name,
-    double? price,
+    int? price,
     required int quantity,
     required String description,
     required String fileName,
@@ -131,7 +131,7 @@ class ProductServices extends RemoteServices {
     required int size,
     int? condition,
     required int ownerId,
-    required double? ratePerDay,
+    required int? ratePerDay,
     //required bool forRent,
   }) async {
     FormData formData = FormData.fromMap({
@@ -301,8 +301,8 @@ class ProductServices extends RemoteServices {
     int? categoryId,
     int? conditionId,
     int? sizeId,
-    double? priceMin,
-    double? priceMax,
+    int? priceMin,
+    int? priceMax,
   }) async {
     try {
       String endpoint = '/products-sale/filtered';

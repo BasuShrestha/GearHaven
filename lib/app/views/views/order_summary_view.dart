@@ -30,15 +30,15 @@ class OrderSummaryView extends GetView {
 
     int itemCount = getItemCount();
 
-    double getGrandTotal() {
-      double grandTotal = 0.00;
+    int getGrandTotal() {
+      int grandTotal = 0;
       for (CartItem item in orderedItems) {
         grandTotal += (item.product.productPrice! * item.quantity);
       }
       return grandTotal;
     }
 
-    double grandTotal = getGrandTotal();
+    int grandTotal = getGrandTotal();
 
     return Obx(
       () => controller.isLoading.value
@@ -141,7 +141,7 @@ class OrderSummaryView extends GetView {
                                                       Assets
                                                           .cartItemImagePlaceholder,
                                                       fit: BoxFit.cover,
-                                                      // height: double.infinity,
+                                                      // height: int.infinity,
                                                     )
                                                   : Image.network(
                                                       getProductImageUrl(

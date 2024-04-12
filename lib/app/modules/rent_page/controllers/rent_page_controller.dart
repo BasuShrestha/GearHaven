@@ -186,7 +186,7 @@ class RentPageController extends GetxController {
     isLoading.value = true;
     if (uploadProductKey.currentState!.validate()) {
       try {
-        double? rateForDay = double.tryParse(rateController.text);
+        int? rateForDay = int.tryParse(rateController.text);
         int? stockQuantity = int.tryParse(quantityController.text);
         //int? userId = int.tryParse(LocalStorage.getUserId().toString());
         await productServices
@@ -249,8 +249,8 @@ class RentPageController extends GetxController {
     isLoading.value = true;
     if (updateProductKey.currentState!.validate()) {
       try {
-        double? price = double.tryParse(priceController.text);
-        double? ratePerDay = double.tryParse(rateController.text);
+        int? price = int.tryParse(priceController.text);
+        int? ratePerDay = int.tryParse(rateController.text);
         int? stockQuantity = int.tryParse(quantityController.text);
         await productServices
             .updateRentalProduct(

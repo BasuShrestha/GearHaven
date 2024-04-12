@@ -45,7 +45,7 @@ class User {
   final String? userLocation;
   final String? profileImage;
   final int? isVerified;
-  final double? totalIncome;
+  final int? totalIncome;
   final dynamic token;
   final String? fcmToken;
   final String? refreshToken;
@@ -80,7 +80,7 @@ class User {
         userLocation: json["user_location"],
         profileImage: json["profile_image"],
         isVerified: json["is_verified"],
-        totalIncome: json["total_income"]?.toDouble(),
+        totalIncome: json["total_income"],
         token: json["token"],
         fcmToken: json["fcm_token"],
         refreshToken: json["refresh_token"],

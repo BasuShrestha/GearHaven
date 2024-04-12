@@ -68,6 +68,11 @@ class LocalStorage {
   }
 
   static void removeAll() async {
+    // await prefs!.remove('userId');
+    // await prefs!.remove('accessToken');
+    // await prefs!.remove('refreshToken');
+    // await prefs!.remove('cart');
+    // await prefs!.remove('wishlist');
     await prefs!.clear();
   }
 }

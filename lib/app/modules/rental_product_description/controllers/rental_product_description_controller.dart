@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/data/services/renting_services.dart';
 import 'package:gearhaven/app/models/rental_product.dart';
-import 'package:gearhaven/app/models/wishlist.dart';
 import 'package:gearhaven/app/modules/rent_page/controllers/rent_page_controller.dart';
 import 'package:gearhaven/app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'package:gearhaven/app/utils/local_storage.dart';
@@ -34,7 +33,7 @@ class RentalProductDescriptionController extends GetxController {
     toDate.value = date;
   }
 
-  double calculateTotalAmount(double ratePerDay) {
+  int calculateTotalAmount(int ratePerDay) {
     return ratePerDay * toDate.value.difference(fromDate.value).inDays;
   }
 

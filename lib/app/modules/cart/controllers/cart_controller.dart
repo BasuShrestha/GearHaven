@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:gearhaven/app/components/customs/custom_snackbar.dart';
 import 'package:gearhaven/app/data/services/order_services.dart';
 import 'package:gearhaven/app/models/cart_item.dart';
 import 'package:gearhaven/app/models/product.dart';
+import 'package:gearhaven/app/modules/home/controllers/home_controller.dart';
 import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gearhaven/app/views/views/order_summary_view.dart';
@@ -47,7 +49,7 @@ class CartController extends GetxController {
   //   update();
   // }
 
-  var total = 0.0.obs;
+  var total = 0.obs;
 
   @override
   void onInit() {
@@ -66,7 +68,16 @@ class CartController extends GetxController {
     );
   }
 
-  void increaseQuantity(int index) {
+  void increaseQuantity(int index, Product product) {
+    if ((product.productstockQuantity ?? 0) <= cart[index].quantity) {
+      CustomSnackbar.errorSnackbar(
+        context: Get.context,
+        title: 'Insufficient stock',
+        message: 'The quantity requested is not available right now',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
     cart[index].quantity++;
     setLocalCart();
     updateTotal();
@@ -255,6 +266,7 @@ class CartController extends GetxController {
       await orderService
           .makeSalesPayment(
         userId: LocalStorage.getUserId() ?? 0,
+        orderId: createdOrderId.value,
         transactionId: createdOrderId.value,
         transactionType: "order",
         amountPaid: grandTotal,
@@ -279,6 +291,8 @@ class CartController extends GetxController {
         selectedCartItems.clear();
         setLocalCart();
         updateTotal();
+        Get.find<HomeController>().getProducts();
+        Get.find<HomeController>().getFilteredProducts();
         isLoading.value = false;
 
         update();

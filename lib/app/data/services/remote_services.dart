@@ -37,7 +37,7 @@ class RemoteServices {
           return handler.next(options);
         },
         onError: ((error, handler) async {
-          if (error.response?.statusCode == 401) {
+          if (error.response?.statusCode == 403) {
             final newAccessToken = await refreshToken();
             if (newAccessToken != null) {
               json_dio.options.headers["Authorization"] =
@@ -59,7 +59,7 @@ class RemoteServices {
           return handler.next(options);
         },
         onError: ((error, handler) async {
-          if (error.response?.statusCode == 401) {
+          if (error.response?.statusCode == 403) {
             final newAccessToken = await refreshToken();
             if (newAccessToken != null) {
               json_dio.options.headers["Authorization"] =

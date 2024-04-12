@@ -12,7 +12,7 @@ String rentalProductToJson(RentalProduct data) => json.encode(data.toJson());
 class RentalProduct {
   final int? productId;
   final String? productName;
-  final double? productPrice;
+  final int? productPrice;
   final int? productstockQuantity;
   final String? productDesc;
   final String? productImage;
@@ -32,7 +32,7 @@ class RentalProduct {
   final String? categoryName;
   final String? productconditionName;
   final String? productsizeName;
-  final double? ratePerDay;
+  final int? ratePerDay;
   final String? rentingStatus;
 
   RentalProduct({
@@ -65,7 +65,7 @@ class RentalProduct {
   factory RentalProduct.fromJson(Map<String, dynamic> json) => RentalProduct(
         productId: json["product_id"],
         productName: json["product_name"],
-        productPrice: double.tryParse(json["product_price"].toString()),
+        productPrice: json["product_price"],
         productstockQuantity: json["productstock_quantity"],
         productDesc: json["product_desc"],
         productImage: json["product_image"],
@@ -89,7 +89,7 @@ class RentalProduct {
         categoryName: json["category_name"],
         productconditionName: json["productcondition_name"],
         productsizeName: json["productsize_name"],
-        ratePerDay: double.tryParse(json["rate_per_day"].toString()),
+        ratePerDay: json["rate_per_day"],
         rentingStatus: json["renting_status"],
       );
 

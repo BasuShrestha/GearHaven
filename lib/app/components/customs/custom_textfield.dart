@@ -9,6 +9,7 @@ class CustomTextfield extends StatefulWidget {
   final double? cursorHeight;
   final EdgeInsetsGeometry? contentPadding;
   final bool? isPassword;
+  final bool? isContactNumber;
   final Icon? suffixIcon;
   final VoidCallback? onSuffixIconPress;
   final TextInputAction? textInputAction;
@@ -27,6 +28,7 @@ class CustomTextfield extends StatefulWidget {
     this.cursorHeight,
     this.contentPadding,
     this.isPassword = false,
+    this.isContactNumber = false,
     this.suffixIcon,
     this.onSuffixIconPress,
     this.textInputAction,
@@ -52,6 +54,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         textInputAction: widget.textInputAction,
         cursorColor: widget.cursorColor ?? Colors.white,
         cursorHeight: widget.cursorHeight ?? 24,
+        cursorWidth: 2,
         cursorOpacityAnimates: true,
         obscureText: widget.isPassword! ? !isObscured : false,
         validator: widget.validator,
@@ -63,16 +66,18 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         decoration: InputDecoration(
           contentPadding: widget.contentPadding ??
               const EdgeInsets.symmetric(
-                vertical: 1,
+                vertical: 2,
               ),
           label: Text(
             widget.label,
             style: widget.labelStyle ??
                 const TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
           ),
+          prefixText: widget.isContactNumber == true ? '+977 | ' : null,
+          prefixStyle: const TextStyle(color: Colors.white, fontSize: 17),
           suffixIcon: widget.suffixIcon != null
               ? GestureDetector(
                   onTap: widget.onSuffixIconPress,
@@ -114,9 +119,13 @@ class _CustomTextfieldState extends State<CustomTextfield> {
               style: BorderStyle.solid,
             ),
           ),
+          errorStyle: const TextStyle(
+            color: Colors.redAccent,
+            fontSize: 14,
+          ),
           errorBorder: const UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.red,
+              color: Colors.redAccent,
               width: 2,
               style: BorderStyle.solid,
             ),

@@ -1,13 +1,11 @@
-import 'dart:convert';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:gearhaven/app/components/customs/custom_snackbar.dart';
 import 'package:gearhaven/app/data/services/auth_services.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
-import 'package:gearhaven/app/utils/constants.dart';
 import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otp_text_field/otp_text_field.dart';
-import 'package:http/http.dart' as http;
 
 class LoginController extends GetxController {
   final count = 0.obs;
@@ -23,10 +21,16 @@ class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  String? deviceFCM = LocalStorage.getFcmToken() ?? 'No Token';
+
+  dynamic fcmToken = '';
+
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     checkUserState();
+    fcmToken = await FirebaseMessaging.instance.getToken();
+    debugPrint('Device FCM in login: $deviceFCM');
   }
 
   void checkUserState() {
@@ -41,59 +45,28 @@ class LoginController extends GetxController {
         isLoading.value = false;
       } else {
         isLoading.value = false;
-        Get.snackbar(
-          'Error',
-          'Please login again',
-          backgroundColor: Colors.amber,
-          colorText: Colors.white,
-        );
+        // Get.snackbar(
+        //   'Error',
+        //   'Please login again',
+        //   backgroundColor: Colors.amber,
+        //   colorText: Colors.white,
+        // );
       }
     });
   }
 
-  // void showLoadingDialog(BuildContext context) {
-  //   var screenSize = MediaQuery.of(context).size;
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false, // User must tap button to close dialog
-  //     builder: (BuildContext context) {
-  //       return Center(
-  //         child: Container(
-  //           width: screenSize.width * 0.3, // 30% of screen width
-  //           height: screenSize.height * 0.3, // 30% of screen height
-  //           decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.circular(10),
-  //           ),
-  //           child: Center(
-  //             child: CircularProgressIndicator(),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  // Future<void> silentLogin() async {
-  //   try {
-  //     final refreshToken = LocalStorage.getRefreshToken();
-  //     final response = await http.post(
-  //       Uri.parse('$baseUrl/refreshToken'),
-  //       body: jsonEncode({'refreshToken': refreshToken}),
-  //       headers: {'Content-Type': 'application/json'},
-  //     );
-  //   } catch (e) {}
-  // }
-
-  void validateLogin() {
+  void validateLogin() async {
     if (loginFormKey.currentState!.validate()) {
       try {
         isLoading.value = true;
+        debugPrint("Storage FCM: $deviceFCM");
+        debugPrint("Firebase FCM: $deviceFCM");
         Map<String, dynamic> data = {
           'email': emailController.text,
           'password': passwordController.text,
+          'fcmToken': fcmToken,
         };
-        auth.login(data).then((value) {
+        await auth.login(data).then((value) {
           Get.snackbar(
             "Success",
             value.message ?? '',
@@ -105,21 +78,18 @@ class LoginController extends GetxController {
           debugPrint(value.accessToken);
           LocalStorage.setRefreshToken(value.refreshToken ?? '');
           debugPrint(value.refreshToken);
-          LocalStorage.setFcmToken(value.user?.fcmToken ?? 'No fcm Token');
           debugPrint(value.user?.fcmToken ?? 'No fcm Token');
-          LocalStorage.setFcmToken(
-              value.user?.userId.toString() ?? 'No user Id');
+          LocalStorage.setUserId(value.user?.userId ?? 0);
           debugPrint(value.user?.userId.toString() ?? 'No user Id');
           Get.offAllNamed(Routes.MAIN);
           isLoading.value = false;
         }).onError((error, stackTrace) {
           isLoading.value = false;
-          Get.snackbar(
-            "Error",
-            error.toString(),
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 3),
+          debugPrint(error.toString());
+          CustomSnackbar.loginErrorSnackbar(
+            context: Get.context,
+            title: 'Incorrect Password',
+            message: error.toString(),
           );
         });
       } catch (e) {
@@ -127,7 +97,7 @@ class LoginController extends GetxController {
         Get.snackbar(
           "Error",
           "Something went wrong!",
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.redAccent,
           colorText: Colors.white,
           duration: const Duration(seconds: 3),
         );
@@ -135,7 +105,7 @@ class LoginController extends GetxController {
     } else {
       Get.snackbar(
         "Error",
-        "Fill all the fileds!",
+        "Fill all the fields!",
         backgroundColor: Colors.red,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
@@ -143,79 +113,79 @@ class LoginController extends GetxController {
     }
   }
 
-  void onLogin() async {
-    if (loginFormKey.currentState!.validate()) {
-      String url = '$baseUrl/login';
-      Uri uri = Uri.parse(url);
-      final response = await http.post(
-        uri,
-        body: jsonEncode(
-          {
-            "email": emailController.text,
-            "password": passwordController.text,
-          },
-        ),
-        headers: {"Content-Type": "application/json"},
-      );
+  // void onLogin() async {
+  //   if (loginFormKey.currentState!.validate()) {
+  //     String url = '$baseUrl/login';
+  //     Uri uri = Uri.parse(url);
+  //     final response = await http.post(
+  //       uri,
+  //       body: jsonEncode(
+  //         {
+  //           "email": emailController.text,
+  //           "password": passwordController.text,
+  //         },
+  //       ),
+  //       headers: {"Content-Type": "application/json"},
+  //     );
 
-      Map<String, dynamic> result = jsonDecode(response.body);
-      if (response.statusCode == 201) {
-        debugPrint(result.toString());
-        Get.snackbar(
-          "Success",
-          result['message'],
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 1),
-        );
-        LocalStorage.setAccessToken(result['accessToken']);
-        debugPrint(result['accessToken']);
-        LocalStorage.setRefreshToken(result['refreshToken']);
-        debugPrint(result['refreshToken']);
-        Get.offAllNamed(Routes.MAIN);
-      } else if (response.statusCode == 401) {
-        Get.snackbar(
-          "Error",
-          result['message'],
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 2),
-        );
-      } else if (response.statusCode == 500) {
-        Get.snackbar(
-          "Error",
-          result['message'],
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 2),
-        );
-      } else if (response.statusCode == 400) {
-        Get.snackbar(
-          "Error",
-          result['message'],
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 2),
-        );
-      } else {
-        Get.snackbar(
-          "Error",
-          "Something went wrong!",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 2),
-        );
-      }
-    } else {
-      Get.snackbar(
-        "Error",
-        "Please fill all the fields",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-      );
-    }
-  }
+  //     Map<String, dynamic> result = jsonDecode(response.body);
+  //     if (response.statusCode == 201) {
+  //       debugPrint(result.toString());
+  //       Get.snackbar(
+  //         "Success",
+  //         result['message'],
+  //         backgroundColor: Colors.green,
+  //         colorText: Colors.white,
+  //         duration: const Duration(seconds: 1),
+  //       );
+  //       LocalStorage.setAccessToken(result['accessToken']);
+  //       debugPrint(result['accessToken']);
+  //       LocalStorage.setRefreshToken(result['refreshToken']);
+  //       debugPrint(result['refreshToken']);
+  //       Get.offAllNamed(Routes.MAIN);
+  //     } else if (response.statusCode == 401) {
+  //       Get.snackbar(
+  //         "Error",
+  //         result['message'],
+  //         backgroundColor: Colors.red,
+  //         colorText: Colors.white,
+  //         duration: const Duration(seconds: 2),
+  //       );
+  //     } else if (response.statusCode == 500) {
+  //       Get.snackbar(
+  //         "Error",
+  //         result['message'],
+  //         backgroundColor: Colors.red,
+  //         colorText: Colors.white,
+  //         duration: const Duration(seconds: 2),
+  //       );
+  //     } else if (response.statusCode == 400) {
+  //       Get.snackbar(
+  //         "Error",
+  //         result['message'],
+  //         backgroundColor: Colors.red,
+  //         colorText: Colors.white,
+  //         duration: const Duration(seconds: 2),
+  //       );
+  //     } else {
+  //       Get.snackbar(
+  //         "Error",
+  //         "Something went wrong!",
+  //         backgroundColor: Colors.red,
+  //         colorText: Colors.white,
+  //         duration: const Duration(seconds: 2),
+  //       );
+  //     }
+  //   } else {
+  //     Get.snackbar(
+  //       "Error",
+  //       "Please fill all the fields",
+  //       backgroundColor: Colors.red,
+  //       colorText: Colors.white,
+  //       duration: const Duration(seconds: 2),
+  //     );
+  //   }
+  // }
 
   @override
   void onReady() {

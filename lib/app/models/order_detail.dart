@@ -15,11 +15,11 @@ class OrderDetail {
   final int? productId;
   final int? sellerId;
   final int? quantity;
-  final double? lineTotal;
+  final int? lineTotal;
   final String? deliveryStatus;
   final int? userId;
   final DateTime? orderDate;
-  final double? orderTotal;
+  final int? orderTotal;
   final String? userName;
   final String? userContact;
   final String? userLocation;
@@ -52,13 +52,13 @@ class OrderDetail {
         productId: json["product_id"],
         sellerId: json["seller_id"],
         quantity: json["quantity"],
-        lineTotal: json["line_total"]?.toDouble(),
+        lineTotal: json["line_total"],
         deliveryStatus: json["delivery_status"],
         userId: json["user_id"],
         orderDate: json["order_date"] == null
             ? null
             : DateTime.parse(json["order_date"]),
-        orderTotal: json["order_total"]?.toDouble(),
+        orderTotal: json["order_total"],
         userName: json["user_name"],
         userContact: json["user_contact"],
         userLocation: json["user_location"],
@@ -92,11 +92,11 @@ class OrderDetail {
     int? productId,
     int? sellerId,
     int? quantity,
-    double? lineTotal,
+    int? lineTotal,
     String? deliveryStatus,
     int? userId,
     DateTime? orderDate,
-    double? orderTotal,
+    int? orderTotal,
     String? userName,
     String? userContact,
     String? userLocation,

@@ -1,9 +1,15 @@
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
+import 'package:gearhaven/app/components/customs/custom_button.dart';
+import 'package:gearhaven/app/data/services/auth_services.dart';
 import 'package:gearhaven/app/data/services/user_services.dart';
 import 'package:gearhaven/app/models/user.dart';
 import 'package:gearhaven/app/modules/main/controllers/main_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:gearhaven/app/routes/app_pages.dart';
+import 'package:gearhaven/app/utils/colors.dart';
+import 'package:gearhaven/app/utils/local_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -24,6 +30,7 @@ class ProfilePageController extends GetxController {
   Rx<User> currentUser = Get.find<MainController>().currentUser;
 
   UserServices userServices = UserServices();
+  AuthServices authServices = AuthServices();
 
   ImagePicker picker = ImagePicker();
   XFile? profileImage;
@@ -101,6 +108,73 @@ class ProfilePageController extends GetxController {
       debugPrint("Error in profile updation: $e");
       rethrow;
     }
+  }
+
+  void onlogOut() async {
+    showCupertinoDialog(
+      context: Get.context!,
+      barrierDismissible: true,
+      builder: (context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 5,
+              horizontal: 15,
+            ),
+            width: 450,
+            height: 100,
+            child: Column(
+              children: [
+                Text(
+                  "Are you sure you want to log out?",
+                  style: TextStyle(
+                    fontSize: 19,
+                    color: CustomColors.primaryColor,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CustomButton(
+                      width: 50,
+                      height: 50,
+                      labelStyle: TextStyle(
+                        fontSize: 19,
+                        color: Colors.white,
+                      ),
+                      label: 'Yes',
+                      onPressed: () async {
+                        await authServices.logout();
+                        LocalStorage.removeAll();
+                        Get.toNamed(Routes.LOGIN);
+                      },
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    CustomButton(
+                      width: 50,
+                      height: 50,
+                      labelStyle: TextStyle(
+                        fontSize: 19,
+                        color: Colors.white,
+                      ),
+                      label: 'No',
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override

@@ -19,7 +19,7 @@ class Renting {
   final String? rentingStatus;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final double? amountPaid;
+  final int? amountPaid;
   final String? userName;
   final String? userContact;
   final String? userLocation;
@@ -65,7 +65,7 @@ class Renting {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
-        amountPaid: double.tryParse(json["amount_paid"].toString()),
+        amountPaid: int.tryParse(json["amount_paid"].toString()),
         userName: json["user_name"],
         userContact: json["user_contact"],
         userLocation: json["user_location"],

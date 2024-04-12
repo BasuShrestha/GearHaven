@@ -12,15 +12,16 @@ class AuthServices extends RemoteServices {
       return userTokenFromJson(response.toString());
     } on DioException catch (err) {
       if (err.response?.statusCode == 404) {
-        return Future.error('Email not found');
+        return Future.error(err.response?.data['message']);
       } else if (err.response?.statusCode == 401) {
         return Future.error(err.response?.data['message']);
       } else if (err.response?.statusCode == 400) {
-        return Future.error(err.response?.data['errors'][0]['msg']);
+        return Future.error(err.response?.data['errors'][0]['message']);
       } else if (err.response?.statusCode == 500) {
-        return Future.error('Internal Server Error!');
+        return Future.error(err.response?.data['message']);
       } else {
-        return Future.error("The else block");
+        return Future.error(
+            "Code: ${err.response!.statusCode} ${err.response!.data['message']}");
       }
     } catch (e) {
       gt.Get.snackbar(
@@ -34,6 +35,41 @@ class AuthServices extends RemoteServices {
     }
   }
 
+  Future<void> logout() async {
+    try {
+      final response = await json_dio.post('/logout');
+      if (response.statusCode == 200) {
+        gt.Get.snackbar(
+          "Success",
+          "Logged out successfully",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        gt.Get.snackbar(
+          "Error",
+          "Failed to log out",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } on DioException catch (e) {
+      gt.Get.snackbar(
+        "Error",
+        e.response?.data['message'] ?? "Error during logout",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      gt.Get.snackbar(
+        "Error",
+        "An unexpected error occurred during logout: $e",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
   Future<RegistrationResponse> register(Map<String, dynamic> register) async {
     try {
       final response = await json_dio.post('/register', data: register);
@@ -44,7 +80,7 @@ class AuthServices extends RemoteServices {
       } else if (err.response?.statusCode == 401) {
         return Future.error(err.response?.data['message']);
       } else if (err.response?.statusCode == 400) {
-        return Future.error(err.response?.data['errors'][0]['msg']);
+        return Future.error(err.response?.data['errors'][0]['message']);
       } else if (err.response?.statusCode == 500) {
         return Future.error('Internal Server Error!');
       } else {
@@ -114,6 +150,44 @@ class AuthServices extends RemoteServices {
       }
     } catch (e) {
       return Future.error('An unexpected error occurred: $e');
+    }
+  }
+
+  Future<void> updateFcmToken(String oldFcmToken, String newFcmToken) async {
+    try {
+      final response = await json_dio.post(
+        '/updateFcmToken/$oldFcmToken',
+        data: {'newFcmToken': newFcmToken},
+      );
+      if (response.statusCode == 200) {
+        gt.Get.snackbar(
+          "Success",
+          "FCM token updated successfully",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        gt.Get.snackbar(
+          "Error",
+          "Failed to update FCM token",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } on DioException catch (e) {
+      gt.Get.snackbar(
+        "Error",
+        e.response?.data['message'] ?? "Error updating FCM token",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      gt.Get.snackbar(
+        "Error",
+        "An unexpected error occurred: $e",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 }

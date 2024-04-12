@@ -14,15 +14,15 @@ class PaymentConfirmationView extends GetView {
     var orderedItems = Get.arguments['orderedItems'] as List<CartItem>;
     debugPrint(paymentId);
     // debugPrint(orderedItems[0].product.productName);
-    double getGrandTotal() {
-      double grandTotal = 0.00;
+    int getGrandTotal() {
+      int grandTotal = 0;
       for (CartItem item in orderedItems) {
         grandTotal += (item.product.productPrice! * item.quantity);
       }
       return grandTotal;
     }
 
-    double grandTotal = getGrandTotal();
+    int grandTotal = getGrandTotal();
 
     return Scaffold(
       appBar: AppBar(

@@ -100,6 +100,12 @@ class ProductDescriptionView extends GetView<ProductDescriptionController> {
                           fontSize: 20,
                         ),
                       ),
+                      Text(
+                        'Stock Quantity: ${product.productstockQuantity}',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -127,7 +133,10 @@ class ProductDescriptionView extends GetView<ProductDescriptionController> {
                 ),
                 IconButton(
                   onPressed: () {
-                    controller.quantity++;
+                    if ((product.productstockQuantity!) >
+                        controller.quantity.value) {
+                      controller.quantity++;
+                    }
                   },
                   icon: Icon(
                     Icons.add,

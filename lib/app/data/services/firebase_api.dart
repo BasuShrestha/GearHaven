@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:gearhaven/app/data/services/auth_services.dart';
 import 'package:gearhaven/app/modules/Orders_page/controllers/orders_page_controller.dart';
 import 'package:gearhaven/app/routes/app_pages.dart';
 import 'package:gearhaven/app/utils/local_storage.dart';
@@ -24,6 +25,9 @@ Future<void> handleMessage(RemoteMessage message) async {
   Get.find<OrdersPageController>().update();
   Get.toNamed(Routes.ORDERS_PAGE);
 }
+
+//final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+final AuthServices authServices = AuthServices();
 
 class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
@@ -110,6 +114,16 @@ class FirebaseApi {
     final fCMToken = await _firebaseMessaging.getToken();
     debugPrint("Token $fCMToken");
     LocalStorage.setFcmToken(fCMToken ?? 'No Token');
+    debugPrint("Set FCM: ${LocalStorage.getFcmToken()}");
+
+    _firebaseMessaging.onTokenRefresh.listen((newToken) async {
+      String? oldToken = LocalStorage.getFcmToken();
+      if (oldToken != null && newToken != oldToken) {
+        await authServices.updateFcmToken(oldToken, newToken);
+        LocalStorage.setFcmToken(newToken);
+      }
+    });
+
     initPushNotifications();
     initLocalNotifications(currentUserId);
     Get.put(OrdersPageController()).getOrderedProductsForUser(currentUserId);
